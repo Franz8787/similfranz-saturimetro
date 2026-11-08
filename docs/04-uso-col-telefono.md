@@ -40,10 +40,10 @@ Il saturimetro si usa anche dall'iPod, come uno strumento vero:
 - **Tocco sullo schermo con la sonda non applicata** (sui numeri o sulla curva): applica la sonda. Dopo il tempo di rilevamento compaiono i valori.
 - **Tocco sul numero della SpO₂ o del polso con la sonda applicata**: apre direttamente i limiti di allarme di quel parametro.
 
-**Chi applica la sonda? Scegli tu.** Quando la sonda viene messa sul paziente simulato, il saturimetro deve saperlo, e ci sono due possibilità:
+**Chi attiva la sonda? Scegli tu.** Il saturimetro deve sapere quando la sonda è sul paziente simulato, e ci sono due possibilità:
 
-- **la attiva l'istruttore**, con *Applica la sonda* dalla console oppure con un tocco sullo schermo mentre la posiziona;
-- **la attiva il partecipante in autonomia**: mette la sonda e tocca lo schermo, come parte del gesto.
+- **la attiva l'istruttore**: quando vede che il partecipante posiziona la sonda sul paziente simulato, tocca *Applica la sonda* nella console;
+- **la attiva il partecipante in autonomia**: posiziona la sonda e tocca lo schermo dell'iPod.
 
 I tocchi non staccano mai la sonda: per toglierla usa la console (o lo scenario la stacca da solo al reset).
 
