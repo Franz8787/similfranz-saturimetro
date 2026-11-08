@@ -1,0 +1,12 @@
+# compilazione
+app/build/
+app/sdk/
+*.o
+# pacchetti: si pubblicano nelle Releases, non nel codice
+app/dist/
+*.deb
+# Blender e Python
+*.blend1
+__pycache__/
+# macOS
+.DS_Store

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="similFranzSat">
+<meta name="theme-color" content="#07090d">
+<title>similFranzSat</title>
+<style>
+:root { --bg0:#07090d; --bg2:#141c26; --bg3:#1d2836; --mon:#04070b; --line:rgba(255,255,255,.08); --line2:#2e3f53;
+  --ink:#edf2f7; --ink2:#aab8c6; --ink3:#7d8da0; --acc:#41c3ea; --acc-deep:#0f4259; --ok:#36d273; --warn:#f6a821;
+  --green:#3ddc74; --cyan:#3ccfff; --amber:#ff9f1a; --red:#f24040; --r:12px; }
+* { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+[hidden] { display:none !important; }
+html, body { height:100%; }
+html { -webkit-text-size-adjust:100%; }
+body { margin:0; background:var(--bg0); color:var(--ink); font:15px/1.35 -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing:antialiased; overscroll-behavior:none; }
+button { font:inherit; cursor:pointer; touch-action:manipulation; border:1px solid var(--line2); background:var(--bg3); color:var(--ink); padding:10px 8px; border-radius:var(--r); min-height:48px; font-weight:600; }
+button:active { filter:brightness(1.25); }
+button:disabled { opacity:.35; }
+button.on { background:#3a2a0a; border-color:var(--amber); color:#ffd89a; }
+button.go { background:#123a24; border-color:var(--ok); color:#c6ffd9; }
+button.primary { background:var(--acc); border-color:var(--acc); color:#03202c; }
+button.danger { background:#3a1212; border-color:var(--red); color:#ffb3b3; }
+button.ghost { background:transparent; }
+.hint { color:var(--ink3); font-size:13px; margin:6px 0 0; }
+.err { color:#ff8a8a; min-height:1.2em; font-size:14px; }
+.lbl { font-size:12px; color:var(--ink3); text-transform:uppercase; letter-spacing:.07em; font-weight:800; margin:0 0 6px; }
+
+/* app a tutto schermo: intestazione, stato, scheda, barra delle schede */
+.app { height:100%; height:100dvh; display:flex; flex-direction:column; max-width:520px; margin:0 auto;
+  padding:max(8px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) 0 max(12px, env(safe-area-inset-left)); }
+.top { display:flex; align-items:center; gap:8px; padding:2px 0 8px; }
+.brand { font-weight:800; font-size:17px; } .brand span { color:var(--ink3); font-weight:600; font-size:13px; margin-left:4px; }
+.pill { margin-left:auto; font-size:12px; padding:4px 10px; border-radius:20px; background:var(--bg3); color:var(--ink2); white-space:nowrap; }
+.pill.ok { background:#123a24; color:var(--ok); } .pill.warn { background:#3a2a0a; color:var(--warn); }
+.top button { min-height:32px; padding:3px 10px; font-size:13px; background:transparent; }
+.shown { font-size:14px; color:var(--ink2); padding:9px 12px; border-radius:var(--r); background:var(--mon); border:1px solid var(--line); min-height:40px; }
+.shown b { color:var(--ink); }
+.pane { flex:1; min-height:0; overflow-y:auto; padding:12px 0; display:flex; flex-direction:column; gap:12px; }
+.tabs { display:grid; grid-template-columns:repeat(4, 1fr); gap:4px; padding:6px 0 max(8px, env(safe-area-inset-bottom)); border-top:1px solid var(--line); }
+.tabs button { background:transparent; border:0; min-height:52px; padding:4px 0; font-size:12px; color:var(--ink3); display:flex; flex-direction:column; align-items:center; gap:3px; }
+.tabs button svg { width:22px; height:22px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.tabs button.sel { color:var(--acc); }
+.tabs button .dot { width:6px; height:6px; border-radius:3px; background:var(--amber); margin-top:-2px; visibility:hidden; }
+.tabs button .dot.show { visibility:visible; }
+
+/* scheda Paziente */
+.param { background:var(--bg2); border:1px solid var(--line); border-radius:var(--r); padding:10px 12px 4px; }
+.param .row { display:flex; align-items:baseline; gap:10px; }
+.param b { font-size:52px; line-height:1; font-weight:800; font-variant-numeric:tabular-nums; }
+.param .u { color:var(--ink3); font-size:14px; }
+.param .to { margin-left:auto; color:var(--ink2); font-size:13px; text-align:right; }
+.spo2 b { color:var(--cyan); } .pr b { color:var(--green); font-size:34px; }
+.param b.pending { color:#fff; text-shadow:0 0 14px rgba(65,195,234,.7); }
+input[type=range] { width:100%; -webkit-appearance:none; appearance:none; height:44px; background:transparent; margin:0; }
+input[type=range]::-webkit-slider-runnable-track { height:8px; border-radius:4px; background:var(--bg3); border:1px solid var(--line2); }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:34px; height:34px; border-radius:50%; margin-top:-14px; background:#e9f2fa; border:2px solid var(--acc); }
+input[type=range]::-moz-range-track { height:8px; border-radius:4px; background:var(--bg3); border:1px solid var(--line2); }
+input[type=range]::-moz-range-thumb { width:32px; height:32px; border-radius:50%; background:#e9f2fa; border:2px solid var(--acc); }
+.seg { display:grid; gap:5px; }
+.seg.c5 { grid-template-columns:repeat(5, 1fr); } .seg.c3 { grid-template-columns:repeat(3, 1fr); }
+.seg button { min-height:42px; padding:4px 0; font-size:13px; }
+.seg button.sel { background:var(--acc-deep); border-color:var(--acc); color:#dff6ff; }
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.apply { display:flex; gap:8px; }
+.apply .primary { flex:1; min-height:52px; font-size:16px; }
+.apply .ghost { padding:0 16px; }
+
+.quick { margin-bottom:8px; } .quick button { min-height:54px; font-size:16px; }
+/* scheda Saturimetro */
+.big2 button { min-height:72px; font-size:17px; }
+.devinfo { font-size:13px; color:var(--ink3); }
+
+/* scheda Allarmi */
+.lim { display:grid; grid-template-columns:auto 1fr 1fr; gap:8px; align-items:center; font-size:15px; }
+.lim input { width:100%; font:inherit; font-size:20px; padding:8px; text-align:center; background:var(--mon); color:var(--ink); border:1px solid var(--line2); border-radius:10px; }
+.lim .h { font-size:12px; color:var(--ink3); text-align:center; }
+
+.login { max-width:380px; margin:0 auto; padding:60px 16px; text-align:center; }
+.login .brand { font-size:28px; }
+.login input { width:100%; font-size:26px; letter-spacing:.3em; text-align:center; padding:12px; margin:16px 0 10px; background:var(--mon); color:var(--ink); border:1px solid var(--line2); border-radius:var(--r); }
+.login button { width:100%; }
+.foot { text-align:center; color:var(--ink3); font-size:11px; letter-spacing:.08em; margin:16px 0 6px; }
+a { color:var(--acc); }
+</style>
+</head>
+<body>
+
+<section id="login" class="login">
+  <div class="brand">similFranzSat</div>
+  <div class="hint" style="font-size:15px">Saturimetro · regia dal telefono</div>
+  <form id="loginForm"><input id="pin" type="password" inputmode="numeric" autocomplete="off" placeholder="PIN" required>
+  <button type="submit" class="primary">Entra</button></form>
+  <p id="loginErr" class="err"></p>
+  <p class="hint">Il PIN si legge sull'iPod: menu ≡ → Informazioni.</p>
+  <p class="foot">SIMULAZIONE — NON PER USO CLINICO</p>
+</section>
+
+<section id="linked" class="login" hidden>
+  <div class="brand">similFranzSat</div>
+  <p><b>Il saturimetro è collegato al monitor.</b> Finché il monitor è in rete i comandi si danno da lì: questa pagina resta in attesa.</p>
+  <p><a id="monitorLink" href="#">Apri la console del monitor</a></p>
+  <p class="hint">Se il monitor sparisce dalla rete, l'iPod torna autonomo e questa pagina riprende da sola i comandi.</p>
+</section>
+
+<div id="console" class="app" hidden>
+  <div class="top"><div class="brand">similFranz<span>Sat</span></div><span id="conn" class="pill">…</span><button id="logout">Esci</button></div>
+  <div class="grid2 quick"><button id="oxiPower"></button><button id="oxiSensor"></button></div>
+  <div id="shown" class="shown"></div>
+
+  <!-- PAZIENTE -->
+  <div class="pane" id="tab-paz">
+    <div class="param spo2">
+      <div class="row"><b id="v_spo2">--</b><span class="u">SpO₂ %</span><span class="to" id="t_spo2"></span></div>
+      <input id="i_spo2" type="range" min="50" max="100" step="1" aria-label="SpO2">
+    </div>
+    <div class="param pr">
+      <div class="row"><b id="v_pr">--</b><span class="u">Polso bpm</span><span class="to" id="t_pr"></span></div>
+      <input id="i_pr" type="range" min="20" max="220" step="1" aria-label="Polso">
+    </div>
+    <div><div class="lbl">Tempo di transizione</div>
+      <div class="seg c5" id="dur"><button data-d="0">Subito</button><button data-d="10">10 s</button><button data-d="30" class="sel">30 s</button><button data-d="60">1 min</button><button data-d="120">2 min</button></div></div>
+    <div class="apply"><button id="applyGo" class="primary" disabled>Sposta i cursori</button><button id="applyNo" class="ghost" hidden>Annulla</button></div>
+    <div class="grid2"><button id="f_afib">Ritmo irregolare</button><button id="f_lowperf">Bassa perfusione</button></div>
+  </div>
+
+  <!-- SATURIMETRO -->
+  <div class="pane" id="tab-sat" hidden>
+    <div id="oxiStatus" class="devinfo"></div>
+    <button id="oxiMute"></button>
+    <div><div class="lbl">Tempo di rilevamento dopo l'applicazione della sonda</div>
+      <div class="seg c3" id="acq"><button data-a="0">Auto 5–10 s</button><button data-a="3">3 s</button><button data-a="5">5 s</button><button data-a="10">10 s</button><button data-a="20">20 s</button><button data-a="30">30 s</button></div>
+      <p class="hint">Quanto impiega a mostrare SpO₂ e polso dopo che la sonda è sul dito (e dopo ogni ripresa del segnale).</p></div>
+  </div>
+
+  <!-- ALLARMI -->
+  <div class="pane" id="tab-all" hidden>
+    <div><div class="lbl">Volume allarmi · <output id="o_vol"></output> %</div>
+      <input id="oxiVolume" type="range" min="0" max="100" step="5" aria-label="Volume"></div>
+    <div><div class="lbl">Limiti</div>
+      <div class="lim"><span></span><span class="h">Min</span><span class="h">Max</span>
+        <span>SpO₂</span><input type="number" inputmode="numeric" id="ol_spo2_low" min="20" max="99"><input type="number" inputmode="numeric" id="ol_spo2_high" min="21" max="100">
+        <span>Polso</span><input type="number" inputmode="numeric" id="ol_pr_low" min="20" max="240"><input type="number" inputmode="numeric" id="ol_pr_high" min="25" max="250"></div></div>
+    <div class="grid2"><button id="limApply" class="primary">Applica limiti</button><button id="limReset" class="ghost">Predefiniti</button></div>
+    <p class="hint" style="margin:0">Predefiniti: SpO₂ 85–100 · polso 30–170.</p>
+  </div>
+
+  <!-- SCENARIO -->
+  <div class="pane" id="tab-sce" hidden>
+    <p class="hint" style="margin:0">Riporta il paziente ai valori iniziali (97 % · 78 bpm), stacca il sensore e spegne il saturimetro: pronto per il prossimo gruppo.</p>
+    <button id="reset" class="danger" style="min-height:64px">Azzera scenario</button>
+    <p id="msg" class="err"></p>
+    <p class="foot">SIMULAZIONE — NON PER USO CLINICO<br><span id="dev"></span></p>
+  </div>
+
+  <nav class="tabs" id="tabs">
+    <button data-t="paz" class="sel"><svg viewBox="0 0 24 24"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg>Paziente<span class="dot" id="dot-paz"></span></button>
+    <button data-t="sat"><svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M10 18h4"/></svg>Saturimetro<span class="dot" id="dot-sat"></span></button>
+    <button data-t="all"><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg>Allarmi<span class="dot" id="dot-all"></span></button>
+    <button data-t="sce"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v6h6"/></svg>Scenario<span class="dot"></span></button>
+  </nav>
+</div>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  function store(k, v) { try { if (v === undefined) return localStorage.getItem(k) || ''; if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) {} return ''; }
+  // QR dell'iPod (menu ≡ › Abbinamento diretto): http://ip:porta/#pin=NNNNNN -> PIN già inserito, poi tolto dall'indirizzo
+  var hashPin = /[#&]pin=([0-9]{4,12})/.exec(location.hash || '');
+  if (hashPin) { store('sfo_token', hashPin[1]); try { history.replaceState(null, '', location.pathname); } catch (e) { location.hash = ''; } }
+  var pairing = !!hashPin;
+  var token = hashPin ? hashPin[1] : store('sfo_token'), state = null, pollT = null, resetArmed = 0, dirtyLim = false, editVol = false, msgAt = 0;
+  var pend = { spo2: null, pr: null }, durSel = 30, inflight = 0;
+
+  function api(method, path, body) {
+    var opt = { method: method, headers: { 'X-SimulaFranz-Token': token }, cache: 'no-store' };
+    if (pairing) opt.headers['X-SimulaFranz-Pair'] = '1';             // prima richiesta dopo il QR: l'iPod chiude il menu e si spegne
+    if (body) { opt.headers['Content-Type'] = 'application/json'; opt.body = JSON.stringify(body); }
+    return fetch(path, opt).then(function (r) { if (r.status === 200 || r.status === 409) pairing = false; return r.json().then(function (j) { j._status = r.status; return j; }); })
+      .catch(function () { return { ok: false, _status: 0, error: 'nessuna risposta dall\'iPod' }; });
+  }
+  function cmd(name, value) {
+    var b = { command: name }; if (value !== undefined) b.value = value;
+    inflight++;
+    return api('POST', '/api/v1/command', b).then(function (j) { inflight--; handle(j); return j; });
+  }
+  function handle(j) {
+    if (j._status === 401) { token = ''; store('sfo_token', null); showLogin('PIN non valido'); return; }
+    if (j._status === 409 && j.monitor_url) { showLinked(j.monitor_url); return; }
+    if (!j.ok) { $('msg').textContent = j.error || ('errore ' + j._status); msgAt = Date.now(); if (j._status === 0) { $('conn').textContent = 'non raggiungibile'; $('conn').className = 'pill warn'; } return; }
+    if (Date.now() - msgAt > 5000) $('msg').textContent = '';
+    $('conn').textContent = 'in linea'; $('conn').className = 'pill ok';
+    render(j.state);
+  }
+  function showLogin(err) { clearInterval(pollT); pollT = null; $('login').hidden = false; $('console').hidden = true; $('linked').hidden = true; $('loginErr').textContent = err || ''; clearPending(); }
+  function showLinked(url) { $('login').hidden = true; $('console').hidden = true; $('linked').hidden = false; $('monitorLink').href = url; $('monitorLink').textContent = 'Apri la console del monitor (' + url + ')'; clearPending(); }
+  function showConsole() { $('login').hidden = true; $('linked').hidden = true; $('console').hidden = false; if (!pollT) pollT = setInterval(poll, 1000); }
+  function poll() { if (!inflight) api('GET', '/api/v1/state').then(handle); }
+  function fmt(s) { return Math.floor(s / 60) + ':' + ('0' + (s % 60)).slice(-2); }
+
+  // schede
+  function selectTab(t) {
+    var bs = $('tabs').querySelectorAll('button');
+    for (var i = 0; i < bs.length; i++) { var k = bs[i].getAttribute('data-t'); bs[i].className = k === t ? 'sel' : ''; $('tab-' + k).hidden = k !== t; }
+    store('sfo_tab', t);
+  }
+  var tb = $('tabs').querySelectorAll('button');
+  for (var ti = 0; ti < tb.length; ti++) tb[ti].onclick = function () { selectTab(this.getAttribute('data-t')); };
+  selectTab(store('sfo_tab') || 'paz');
+
+  function shownText(s) {
+    var o = s.oximeter;
+    if (!o.power) return '<b>Spento.</b> Accendilo qui sopra o dal tasto sull\'iPod.';
+    if (!o.sensor_connected) return '<b>Sonda non applicata:</b> trattini e promemoria sonoro.';
+    if (!s.spo2_signal_valid) return '<b>Segnale assente:</b> interferenza, nessun valore.';
+    if (!s.pulse_present) return '<b>Polso assente:</b> nessun valore.';
+    var t = '<b>Mostra ' + s.spo2_percent + ' % · ' + s.pulse_rate_bpm + ' bpm</b>';
+    if (s.spo2_low_perfusion) t += ' · bassa perfusione';
+    if (s.rhythm === 'afib') t += ' · irregolare';
+    return t;
+  }
+  function target(p) {
+    var s = state, tg = s.targets || {};
+    if (p === 'spo2') return tg.spo2_percent !== undefined ? tg.spo2_percent : s.spo2_percent;
+    return tg.pulse_rate_bpm !== undefined ? tg.pulse_rate_bpm : s.pulse_rate_bpm;
+  }
+  function render(s) {
+    state = s; var o = s.oximeter, tg = s.targets || {};
+    $('dev').textContent = s.device_id + ' · rev ' + s.revision;
+    $('shown').innerHTML = shownText(s);
+    ['spo2', 'pr'].forEach(function (p) {
+      var cur = p === 'spo2' ? s.spo2_percent : (s.pulse_present ? s.pulse_rate_bpm : 0), v = $('v_' + p);
+      if (pend[p] !== null) { v.textContent = pend[p]; v.className = 'pending'; $('t_' + p).textContent = 'ora ' + cur; $('i_' + p).value = pend[p]; }
+      else {
+        v.textContent = cur; v.className = '';
+        var tv = p === 'spo2' ? tg.spo2_percent : tg.pulse_rate_bpm, cv = p === 'spo2' ? s.spo2_percent : s.pulse_rate_bpm;
+        $('t_' + p).textContent = tg.remaining_s && tv !== cv ? '→ ' + tv + ' tra ' + tg.remaining_s + ' s' : '';
+        $('i_' + p).value = target(p);
+      }
+    });
+    $('f_afib').className = s.rhythm === 'afib' ? 'on' : '';
+    $('f_lowperf').className = s.spo2_low_perfusion ? 'on' : '';
+    var pw = $('oxiPower'); pw.className = o.power ? 'go' : ''; pw.textContent = o.power ? '● Acceso' : '○ Spento';
+    var se = $('oxiSensor'); se.className = o.sensor_connected ? 'go' : ''; se.textContent = o.sensor_connected ? 'Togli la sonda' : 'Applica la sonda';
+    $('oxiStatus').textContent = o.sensor_connected ? 'Sonda sull\'indice destro da ' + fmt(o.sensor_since_s || 0) : 'Sonda non applicata.';
+    $('oxiMute').disabled = !o.power; $('oxiMute').className = o.muted_remaining_s ? 'on' : '';
+    $('oxiMute').textContent = o.muted_remaining_s ? 'Allarmi silenziati ' + fmt(o.muted_remaining_s) + ' · riattiva' : 'Silenzia allarmi 2 min';
+    var acq = o.acquire_s || 0, ab = $('acq').querySelectorAll('button');
+    for (var i = 0; i < ab.length; i++) ab[i].className = parseInt(ab[i].getAttribute('data-a'), 10) === acq ? 'sel' : '';
+    if (!editVol) { $('oxiVolume').value = o.volume; $('o_vol').textContent = o.volume; }
+    if (!dirtyLim) ['spo2_low', 'spo2_high', 'pr_low', 'pr_high'].forEach(function (k) { var el = $('ol_' + k); if (document.activeElement !== el) el.value = o.alarm_limits[k]; });
+    $('dot-sat').className = 'dot' + (o.muted_remaining_s ? ' show' : '');
+    $('dot-all').className = 'dot';
+    renderApply();
+  }
+
+  // nuovi valori: si preparano con i cursori e partono con "Applica"
+  function clearPending() { pend.spo2 = null; pend.pr = null; renderApply(); }
+  function durText() { return durSel === 0 ? 'subito' : durSel < 60 ? 'in ' + durSel + ' s' : 'in ' + (durSel / 60) + ' min'; }
+  function renderApply() {
+    var on = pend.spo2 !== null || pend.pr !== null;
+    $('applyGo').disabled = !on; $('applyNo').hidden = !on;
+    $('dot-paz').className = 'dot' + (on ? ' show' : '');
+    $('applyGo').textContent = on && state ? 'Applica ' + (pend.spo2 !== null ? pend.spo2 : target('spo2')) + ' % · ' + (pend.pr !== null ? pend.pr : target('pr')) + ' bpm ' + durText() : 'Sposta i cursori, poi applica';
+  }
+  ['spo2', 'pr'].forEach(function (p) {
+    $('i_' + p).oninput = function () {
+      if (!state) return; var v = parseInt(this.value, 10);
+      pend[p] = v === target(p) && pend[p === 'spo2' ? 'pr' : 'spo2'] === null ? null : v;
+      render(state);
+    };
+  });
+  $('applyGo').onclick = function () {
+    var sp = pend.spo2 !== null ? pend.spo2 : target('spo2'), pr = pend.pr !== null ? pend.pr : target('pr');
+    cmd('transition', { params: { spo2_percent: sp, pulse_rate_bpm: pr }, duration_s: durSel }).then(function (j) { if (j && j.ok) { clearPending(); render(state); } });
+  };
+  $('applyNo').onclick = function () { clearPending(); if (state) render(state); };
+  var db = $('dur').querySelectorAll('button');
+  for (var di = 0; di < db.length; di++) db[di].onclick = function () { durSel = parseInt(this.getAttribute('data-d'), 10); for (var k = 0; k < db.length; k++) db[k].className = db[k] === this ? 'sel' : ''; renderApply(); };
+  $('f_afib').onclick = function () { cmd('set_rhythm', state.rhythm === 'afib' ? 'sinus' : 'afib'); };
+  $('f_lowperf').onclick = function () { cmd('set_spo2_low_perfusion', !state.spo2_low_perfusion); };
+
+  $('oxiPower').onclick = function () { cmd('set_oximeter', { power: !state.oximeter.power }); };
+  $('oxiSensor').onclick = function () { cmd('set_sensor', state.oximeter.sensor_connected ? { sensor: 'oxi', connected: false } : { sensor: 'oxi', connected: true, site: 'finger_r2' }); };
+  $('oxiMute').onclick = function () { cmd('set_oximeter', { mute_s: state.oximeter.muted_remaining_s ? 0 : 120 }); };
+  var ab = $('acq').querySelectorAll('button');
+  for (var ai = 0; ai < ab.length; ai++) ab[ai].onclick = function () { cmd('set_oximeter', { acquire_s: parseInt(this.getAttribute('data-a'), 10) }); };
+
+  $('oxiVolume').oninput = function () { editVol = true; $('o_vol').textContent = this.value; };
+  $('oxiVolume').onchange = function () { cmd('set_oximeter', { volume: parseInt(this.value, 10) }).then(function () { editVol = false; }); };
+  ['spo2_low', 'spo2_high', 'pr_low', 'pr_high'].forEach(function (k) { $('ol_' + k).oninput = function () { dirtyLim = true; }; });
+  $('limApply').onclick = function () {
+    var l = {}; ['spo2_low', 'spo2_high', 'pr_low', 'pr_high'].forEach(function (k) { l[k] = parseInt($('ol_' + k).value, 10); });
+    cmd('set_oximeter', { alarm_limits: l }).then(function () { dirtyLim = false; });
+  };
+  $('limReset').onclick = function () { cmd('set_oximeter', { alarm_limits: { spo2_low: 85, spo2_high: 100, pr_low: 30, pr_high: 170 } }).then(function () { dirtyLim = false; }); };
+  $('reset').onclick = function () {
+    var now = Date.now();
+    if (now - resetArmed < 3000) { resetArmed = 0; $('reset').textContent = 'Azzera scenario'; clearPending(); cmd('reset_scenario'); }
+    else { resetArmed = now; $('reset').textContent = 'Confermi? Tocca di nuovo'; setTimeout(function () { if (Date.now() - resetArmed >= 2900) $('reset').textContent = 'Azzera scenario'; }, 3100); }
+  };
+
+  $('loginForm').onsubmit = function (e) {
+    e.preventDefault(); token = $('pin').value.trim();
+    api('GET', '/api/v1/state').then(function (j) {
+      if (j.ok) { store('sfo_token', token); $('pin').value = ''; showConsole(); render(j.state); }
+      else if (j._status === 409 && j.monitor_url) { store('sfo_token', token); showLinked(j.monitor_url); }
+      else $('loginErr').textContent = j._status === 401 ? 'PIN non valido' : j._status === 429 ? 'Troppi tentativi: riprova tra 30 s' : (j.error || 'nessuna risposta');
+    });
+  };
+  $('logout').onclick = function () { token = ''; store('sfo_token', null); showLogin(''); };
+
+  if (token) api('GET', '/api/v1/state').then(function (j) {
+    if (j.ok) { showConsole(); render(j.state); }
+    else if (j._status === 409 && j.monitor_url) showLinked(j.monitor_url);
+    else showLogin('');
+  }); else showLogin('');
+  // dalla pagina "collegato al monitor" si torna alla regia da soli quando il monitor sparisce
+  setInterval(function () { if (!$('linked').hidden && token) api('GET', '/api/v1/state').then(function (j) { if (j.ok) { showConsole(); render(j.state); } }); }, 3000);
+})();
+</script>
+</body>
+</html>
