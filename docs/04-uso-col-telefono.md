@@ -30,6 +30,18 @@ Dopo 8 secondi senza trovare altri dispositivi, l'iPod lavora da solo: non devi 
 - **Allarmi**: volume e limiti (predefiniti SpO₂ 85–100, polso 30–170)
 - **Scenario**: azzera tutto, spegne lo strumento e stacca la sonda, pronto per il prossimo gruppo
 
+## Sull'iPod: tasti e tocchi
+
+Il saturimetro si usa anche senza regia, come uno strumento vero. Così il partecipante può "attivarsi" da solo:
+
+- **⏻ tenuto premuto un secondo**: accende o spegne. All'accensione la sonda risulta sempre staccata.
+- **🔕**: silenzia gli allarmi per 2 minuti (di nuovo per riattivarli).
+- **≡**: apre il menu (limiti, volumi, collegamento, informazioni). **▲ ▼** scorrono, **✓** conferma, **↩** torna indietro.
+- **Tocco sullo schermo con la sonda non applicata** (sui numeri o sulla curva): applica la sonda, come quando il partecipante la mette al dito. Dopo il tempo di rilevamento compaiono i valori. Comodo se non hai una sonda vera collegata al guscio.
+- **Tocco sul numero della SpO₂ o del polso con la sonda applicata**: apre direttamente i limiti di allarme di quel parametro.
+
+I tocchi non staccano mai la sonda: per toglierla usa la console (o lo scenario la stacca da solo al reset).
+
 ## Piccoli trucchi
 
 - **iPhone**: l'hotspot si spegne da solo dopo circa 90 secondi senza nessuno collegato. Tieni aperta la sua schermata finché l'iPod si collega.
