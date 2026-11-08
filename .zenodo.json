@@ -1,0 +1,27 @@
+{
+  "title": "similFranz Saturimetro: un iPod touch 4 riusato come saturimetro da simulazione per la formazione sanitaria",
+  "upload_type": "software",
+  "description": "<p><strong>similFranz Saturimetro</strong> trasforma un vecchio iPod touch di 4ª generazione in un saturimetro palmare da simulazione per la formazione sanitaria: SpO₂, frequenza del polso, curva pletismografica e allarmi con priorità, comandati dall'istruttore con il browser del telefono (abbinamento via QR code, senza internet: il telefono fa da hotspot). Il progetto comprende l'app per iOS 6 (jailbreak), la console web, il guscio e il bumper stampabili in 3D e le guide passo passo.</p><p>Pensato per formatori, istruttori e facilitatori di simulazione. Riusa dispositivi dismessi, riducendo costi e rifiuti elettronici.</p><p><em>English:</em> similFranz Saturimetro turns an old iPod touch (4th generation) into a handheld simulation pulse oximeter for healthcare education: SpO₂, pulse rate, plethysmographic waveform and prioritised alarms, controlled by the instructor from a phone browser (QR-code pairing, no internet needed). It includes the iOS 6 app, the web console, 3D-printable case and bumper, and step-by-step guides.</p><p><strong>Solo per simulazione e formazione: non è un dispositivo medico e non va mai usato su pazienti. / For simulation and education only: not a medical device, never to be used on patients.</strong></p><p>Licenze: codice GNU GPL v3; modelli 3D (cartella stampa3d/) CC BY-NC 4.0.</p>",
+  "creators": [
+    {
+      "name": "Palmisano, Francesco",
+      "orcid": "0009-0009-9368-0212"
+    }
+  ],
+  "keywords": [
+    "healthcare simulation",
+    "simulation-based education",
+    "pulse oximetry",
+    "simulated pulse oximeter",
+    "medical education",
+    "nursing education",
+    "low-cost simulation",
+    "device reuse",
+    "iPod touch",
+    "3D printing",
+    "open hardware",
+    "simulazione in medicina"
+  ],
+  "language": "ita",
+  "notes": "Non è un dispositivo medico. Il jailbreak si esegue sul proprio dispositivo, a proprio rischio; il progetto non distribuisce file di Apple. iPod e iPod touch sono marchi di Apple Inc. Not a medical device; not affiliated with Apple."
+}

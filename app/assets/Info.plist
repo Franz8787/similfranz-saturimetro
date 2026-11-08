@@ -10,13 +10,13 @@
 	<key>CFBundleInfoDictionaryVersion</key><string>6.0</string>
 	<key>CFBundleName</key><string>SimulaFranz_Saturimetro</string>
 	<key>CFBundlePackageType</key><string>APPL</string>
-	<key>CFBundleShortVersionString</key><string>0.3.0</string>
+	<key>CFBundleShortVersionString</key><string>0.3.1</string>
 	<key>CFBundleSupportedPlatforms</key><array><string>iPhoneOS</string></array>
 	<key>CFBundleURLTypes</key><array><dict>
 		<key>CFBundleURLName</key><string>it.simulafranz.saturimetro</string>
 		<key>CFBundleURLSchemes</key><array><string>simulafranz-saturimetro</string></array>
 	</dict></array>
-	<key>CFBundleVersion</key><string>3</string>
+	<key>CFBundleVersion</key><string>4</string>
 	<key>DTPlatformName</key><string>iphoneos</string>
 	<key>LSRequiresIPhoneOS</key><true/>
 	<key>MinimumOSVersion</key><string>6.0</string>

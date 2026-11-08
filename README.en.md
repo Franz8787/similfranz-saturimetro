@@ -112,6 +112,12 @@ to rescue from the drawer. Build it, adapt it to your scenarios and tell us what
 - "iPod" and "iPod touch" are trademarks of Apple Inc., mentioned only to identify the compatible device.
   The project is independent of Apple and of any medical or simulation device manufacturer.
 
+## How to cite
+
+If you use it in a course, a poster or a paper, the ready-made citation is under **Cite this repository**
+here on GitHub ([`CITATION.cff`](CITATION.cff)). Every release is archived on [Zenodo](https://zenodo.org),
+CERN's research repository, with a permanent DOI.
+
 ## Licenses
 
 - Code (`app/`): [GNU GPL v3](LICENSE). You may use, modify, share and even sell it, but anyone who distributes

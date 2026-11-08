@@ -122,6 +122,12 @@ una modifica. Ogni idea rende lo strumento migliore per tutta la comunità della
 - "iPod" e "iPod touch" sono marchi di Apple Inc., citati solo per indicare il dispositivo compatibile.
   Il progetto è indipendente da Apple e da qualsiasi produttore di dispositivi medici o di simulazione.
 
+## Come citarlo
+
+Se lo usi in un corso, un poster o un articolo, trovi la citazione pronta con il pulsante
+**Cite this repository** qui su GitHub (file [`CITATION.cff`](CITATION.cff)). Ogni versione è archiviata
+su [Zenodo](https://zenodo.org), l'archivio scientifico del CERN, con un DOI permanente.
+
 ## Licenze
 
 - Codice (`app/`): [GNU GPL v3](LICENSE). Puoi usarlo, modificarlo, condividerlo e anche venderlo, ma chi distribuisce

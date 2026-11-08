@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "Se usi questo progetto in un corso, un poster o un articolo, citalo così. / If you use this project, please cite it as below."
+type: software
+title: "similFranz Saturimetro: un iPod touch 4 riusato come saturimetro da simulazione per la formazione sanitaria"
+abstract: >-
+  Un vecchio iPod touch di 4ª generazione diventa un saturimetro palmare da simulazione
+  (SpO₂, polso, pletismografia, allarmi) comandato dall'istruttore con il browser del telefono.
+  App per iOS 6, console web, guscio e bumper stampabili in 3D. Non è un dispositivo medico.
+authors:
+  - given-names: Francesco
+    family-names: Palmisano
+    alias: ilFranz
+    orcid: "https://orcid.org/0009-0009-9368-0212"
+version: 0.3.1
+date-released: 2026-11-09
+license: GPL-3.0-only
+repository-code: "https://github.com/Franz8787/similfranz-saturimetro"
+url: "https://franz8787.github.io/similfranz-saturimetro/"
+keywords:
+  - healthcare simulation
+  - simulation-based education
+  - pulse oximetry
+  - medical education
+  - low-cost simulation
+  - device reuse
+  - 3D printing
