@@ -77,8 +77,9 @@ Every iPod back in the sim lab is one device fewer in the e-waste stream: in 202
 
 No app to install on the phone and no internet: the iPod is the server, the phone is the remote.
 
-On the iPod itself the keys work like on a real handheld oximeter, and participants can "activate" things on their own:
-tapping the screen while the probe is off applies it, tapping the SpO₂ or pulse value opens its alarm limits.
+On the iPod itself the keys work like on a real handheld oximeter. When the probe goes on the simulated patient
+you choose who tells the device: the instructor, from the console (or with a tap on the screen), or the participant
+on their own, with a tap. Tapping the SpO₂ or pulse value opens its alarm limits.
 
 ## Four steps, one afternoon
 

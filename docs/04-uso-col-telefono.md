@@ -32,13 +32,18 @@ Dopo 8 secondi senza trovare altri dispositivi, l'iPod lavora da solo: non devi 
 
 ## Sull'iPod: tasti e tocchi
 
-Il saturimetro si usa anche senza regia, come uno strumento vero. Così il partecipante può "attivarsi" da solo:
+Il saturimetro si usa anche dall'iPod, come uno strumento vero:
 
 - **⏻ tenuto premuto un secondo**: accende o spegne. All'accensione la sonda risulta sempre staccata.
 - **🔕**: silenzia gli allarmi per 2 minuti (di nuovo per riattivarli).
 - **≡**: apre il menu (limiti, volumi, collegamento, informazioni). **▲ ▼** scorrono, **✓** conferma, **↩** torna indietro.
-- **Tocco sullo schermo con la sonda non applicata** (sui numeri o sulla curva): applica la sonda, come quando il partecipante la mette al dito. Dopo il tempo di rilevamento compaiono i valori. Comodo se non hai una sonda vera collegata al guscio.
+- **Tocco sullo schermo con la sonda non applicata** (sui numeri o sulla curva): applica la sonda. Dopo il tempo di rilevamento compaiono i valori.
 - **Tocco sul numero della SpO₂ o del polso con la sonda applicata**: apre direttamente i limiti di allarme di quel parametro.
+
+**Chi applica la sonda? Scegli tu.** Quando la sonda viene messa sul paziente simulato, il saturimetro deve saperlo, e ci sono due possibilità:
+
+- **la attiva l'istruttore**, con *Applica la sonda* dalla console oppure con un tocco sullo schermo mentre la posiziona;
+- **la attiva il partecipante in autonomia**: mette la sonda e tocca lo schermo, come parte del gesto.
 
 I tocchi non staccano mai la sonda: per toglierla usa la console (o lo scenario la stacca da solo al reset).
 

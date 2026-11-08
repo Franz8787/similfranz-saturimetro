@@ -86,9 +86,10 @@ rifiuti elettronici ([Global E-waste Monitor 2024, UNITAR](https://unitar.org/in
 
 Niente app da installare sul telefono e niente internet: l'iPod fa da server e il telefono da telecomando.
 
-Sull'iPod i tasti funzionano come su un saturimetro palmare vero, e il partecipante può "attivarsi" da solo:
-un tocco sullo schermo con la sonda staccata la applica, un tocco sul valore di SpO₂ o polso apre i suoi
-limiti di allarme. Tutti i dettagli nella [guida all'uso](docs/04-uso-col-telefono.md#sulipod-tasti-e-tocchi).
+Sull'iPod i tasti funzionano come su un saturimetro palmare vero. Quando la sonda viene messa sul paziente
+simulato puoi scegliere: la attiva l'istruttore dalla console (o con un tocco sullo schermo), oppure il partecipante
+in autonomia, con un tocco. Un tocco sul valore di SpO₂ o polso apre i suoi limiti di allarme.
+Tutti i dettagli nella [guida all'uso](docs/04-uso-col-telefono.md#sulipod-tasti-e-tocchi).
 
 ## Quattro passi, un pomeriggio
 
