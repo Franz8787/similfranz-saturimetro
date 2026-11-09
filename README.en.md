@@ -121,6 +121,15 @@ here on GitHub ([`CITATION.cff`](CITATION.cff)). Every release is archived on [Z
 CERN's research repository, with a permanent DOI:
 [doi.org/10.5281/zenodo.24064777](https://doi.org/10.5281/zenodo.24064777) (always resolves to the latest version).
 
+> Palmisano, F. (2026). *similFranz Saturimetro: un iPod touch 4 riusato come saturimetro da simulazione
+> per la formazione sanitaria*. Zenodo. https://doi.org/10.5281/zenodo.24064777
+
+## How it was made
+
+Idea, clinical and educational choices, design and field testing: ilFranz. The code, the guides and the 3D models
+were developed with the help of **[Claude Code](https://www.anthropic.com/claude-code)** (Anthropic), an AI-based
+coding assistant, under his direction and review.
+
 ## Licenses
 
 - Code (`app/`): [GNU GPL v3](LICENSE). You may use, modify, share and even sell it, but anyone who distributes
@@ -128,4 +137,4 @@ CERN's research repository, with a permanent DOI:
   every improvement goes back to the community. Copyright (C) 2026 ilFranz.
 - 3D models (`stampa3d/`): [CC BY-NC 4.0](stampa3d/LICENSE): print, modify and share them with attribution, not for sale.
 
-An open source project by **ilFranz**, simulation educator with a screwdriver always within reach.
+An open source project by **ilFranz** ([Francesco Palmisano](https://orcid.org/0009-0009-9368-0212) <img src="https://orcid.org/assets/vectors/orcid.logo.icon.svg" width="14" alt="ORCID iD">), simulation educator with a screwdriver always within reach.

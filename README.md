@@ -134,6 +134,12 @@ su [Zenodo](https://zenodo.org), l'archivio scientifico del CERN, con un DOI per
 > Palmisano, F. (2026). *similFranz Saturimetro: un iPod touch 4 riusato come saturimetro da simulazione
 > per la formazione sanitaria*. Zenodo. https://doi.org/10.5281/zenodo.24064777
 
+## Come è nato
+
+Idea, scelte cliniche e didattiche, design e prove sul campo: ilFranz. Il codice, le guide e i modelli 3D
+sono stati sviluppati con l'aiuto di **[Claude Code](https://www.anthropic.com/claude-code)** (Anthropic),
+un assistente di programmazione basato sull'intelligenza artificiale, sotto la sua guida e con la sua verifica.
+
 ## Licenze
 
 - Codice (`app/`): [GNU GPL v3](LICENSE). Puoi usarlo, modificarlo, condividerlo e anche venderlo, ma chi distribuisce
@@ -142,4 +148,4 @@ su [Zenodo](https://zenodo.org), l'archivio scientifico del CERN, con un DOI per
   Copyright (C) 2026 ilFranz.
 - Modelli 3D (`stampa3d/`): [CC BY-NC 4.0](stampa3d/LICENSE): stampali, modificali e condividili citando l'autore, senza venderli.
 
-Un progetto open source di **ilFranz**, formatore di simulazione con il cacciavite sempre a portata di mano.
+Un progetto open source di **ilFranz** ([Francesco Palmisano](https://orcid.org/0009-0009-9368-0212) <img src="https://orcid.org/assets/vectors/orcid.logo.icon.svg" width="14" alt="ORCID iD">), formatore di simulazione con il cacciavite sempre a portata di mano.
