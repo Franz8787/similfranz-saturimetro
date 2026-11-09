@@ -12,6 +12,14 @@ authors:
     alias: ilFranz
     orcid: "https://orcid.org/0009-0009-9368-0212"
 version: 0.3.1
+doi: 10.5281/zenodo.24064777
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.24064777
+    description: "Tutte le versioni su Zenodo / All versions on Zenodo"
+  - type: doi
+    value: 10.5281/zenodo.24064778
+    description: "Versione 0.3.1"
 date-released: 2026-11-09
 license: GPL-3.0-only
 repository-code: "https://github.com/Franz8787/similfranz-saturimetro"

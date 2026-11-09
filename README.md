@@ -1,5 +1,7 @@
 # similFranz Saturimetro
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24064777.svg)](https://doi.org/10.5281/zenodo.24064777)
+
 🇬🇧 [Read in English](README.en.md)
 
 **Quel vecchio iPod touch 4 nel cassetto ha ancora un turno da fare.**
@@ -126,7 +128,11 @@ una modifica. Ogni idea rende lo strumento migliore per tutta la comunità della
 
 Se lo usi in un corso, un poster o un articolo, trovi la citazione pronta con il pulsante
 **Cite this repository** qui su GitHub (file [`CITATION.cff`](CITATION.cff)). Ogni versione è archiviata
-su [Zenodo](https://zenodo.org), l'archivio scientifico del CERN, con un DOI permanente.
+su [Zenodo](https://zenodo.org), l'archivio scientifico del CERN, con un DOI permanente:
+[doi.org/10.5281/zenodo.24064777](https://doi.org/10.5281/zenodo.24064777) (punta sempre all'ultima versione).
+
+> Palmisano, F. (2026). *similFranz Saturimetro: un iPod touch 4 riusato come saturimetro da simulazione
+> per la formazione sanitaria*. Zenodo. https://doi.org/10.5281/zenodo.24064777
 
 ## Licenze
 

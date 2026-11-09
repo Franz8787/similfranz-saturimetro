@@ -1,5 +1,7 @@
 # similFranz Saturimetro
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24064777.svg)](https://doi.org/10.5281/zenodo.24064777)
+
 🇮🇹 [Leggi in italiano](README.md)
 
 **That old iPod touch 4 in the drawer still has one more shift to work.**
@@ -116,7 +118,8 @@ to rescue from the drawer. Build it, adapt it to your scenarios and tell us what
 
 If you use it in a course, a poster or a paper, the ready-made citation is under **Cite this repository**
 here on GitHub ([`CITATION.cff`](CITATION.cff)). Every release is archived on [Zenodo](https://zenodo.org),
-CERN's research repository, with a permanent DOI.
+CERN's research repository, with a permanent DOI:
+[doi.org/10.5281/zenodo.24064777](https://doi.org/10.5281/zenodo.24064777) (always resolves to the latest version).
 
 ## Licenses
 
