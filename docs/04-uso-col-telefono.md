@@ -1,6 +1,6 @@
 # 4. Porta lo scenario in sala
 
-Ti bastano l'iPod e il tuo telefono. Il telefono crea la rete, l'iPod fa tutto il resto:
+Ti bastano l'iPod® e il tuo telefono. Il telefono crea la rete, l'iPod fa tutto il resto:
 simulazione, server e console. Entri in sala o in reparto con lo strumento in tasca e in un minuto sei operativo.
 
 <p align="center">
@@ -12,10 +12,10 @@ simulazione, server e console. Entri in sala o in reparto con lo strumento in ta
 
 Non serve internet: il telefono crea una rete tutta sua e l'iPod ci si collega.
 
-1. **Hotspot sul telefono, a 2,4 GHz**, l'unica banda che l'iPod touch 4 riconosce:
-   - **iPhone**: Impostazioni › Hotspot personale, attiva *Massimizza compatibilità*
+1. **Hotspot sul telefono, a 2,4 GHz**, l'unica banda che l'iPod touch® 4 riconosce:
+   - **iPhone®**: Impostazioni › Hotspot personale, attiva *Massimizza compatibilità*
    - **Android**: nelle impostazioni dell'hotspot scegli *2,4 GHz*
-2. **iPod sulla rete del telefono**: Impostazioni › Wi-Fi › il nome del tuo hotspot. Si fa una volta sola, poi si ricollega da solo.
+2. **iPod sulla rete del telefono**: Impostazioni › Wi-Fi® › il nome del tuo hotspot. Si fa una volta sola, poi si ricollega da solo.
 3. **Apri l'app sull'iPod** e vai in **≡ › Collegamento › Abbinamento diretto**.
 4. **Inquadra il QR** con la fotocamera del telefono e tocca il link: la console si apre con il PIN già inserito, e l'iPod esce dal menu e resta spento, pronto per lo scenario.
 5. **Aggiungi la pagina alla schermata Home**: la prossima volta la regia è a un tocco.
@@ -51,6 +51,6 @@ I tocchi non staccano mai la sonda: per toglierla usa la console (o lo scenario 
 
 - **iPhone**: l'hotspot si spegne da solo dopo circa 90 secondi senza nessuno collegato. Tieni aperta la sua schermata finché l'iPod si collega.
 - **Android**: spesso l'hotspot funziona anche senza dati né SIM, perfetto per le sale senza copertura.
-- **Niente fotocamera a portata?** L'indirizzo e il PIN sono anche in ≡ › Informazioni. Se chiami l'iPod *similFranzSat* (da Finder o iTunes quando è collegato al Mac, oppure con `idevicename similFranzSat`), su iPhone funziona anche `http://similfranzsat.local:8080`, sempre uguale qualunque rete tu usi.
+- **Niente fotocamera a portata?** L'indirizzo e il PIN sono anche in ≡ › Informazioni. Se chiami l'iPod *similFranzSat* (da Finder® o iTunes® quando è collegato al Mac®, oppure con `idevicename similFranzSat`), su iPhone funziona anche `http://similfranzsat.local:8080`, sempre uguale qualunque rete tu usi.
 
 Buona simulazione. E quando migliori qualcosa, raccontalo: [fallo tuo](../README.md#fallo-tuo).

@@ -30,7 +30,7 @@ The app and the guides are in Italian; this page is a summary for international 
   the pulse tone drops with saturation, alarms flash and sound according to their priority.
 - **A real finger sensor.** The case has an inlet for the cable of a probe salvaged from a
   retired oximeter: participants apply it exactly as they will on the ward.
-- **The control room in the palm of your hand.** Scan the QR code on the iPod screen and your phone's
+- **The control room in the palm of your hand.** Scan the QR code on the iPod® screen and your phone's
   browser becomes the instructor console: power and probe always under your thumb, SpO₂ and pulse
   changed instantly or with a gradual transition up to 2 minutes, irregular rhythm, low perfusion,
   and how long the device takes to find the pulse once the probe is on the finger.
@@ -47,7 +47,7 @@ Software and 3D models are free and open source.
 
 ## There is one in every drawer. Literally.
 
-Between 2010 and 2013 Apple sold more than 50 million iPod touch units, and for most of that time the
+Between 2010 and 2013 Apple® sold more than 50 million iPod touch units, and for most of that time the
 model on sale was the 4th generation. Many of them now sit switched off in a drawer, waiting for a
 reason to come back on. If yours is missing, second-hand ones go for a few tens of euros.
 
@@ -62,9 +62,9 @@ Every iPod back in the sim lab is one device fewer in the e-waste stream: in 202
 ## What you need
 
 - **iPod touch 4th generation** (model A1367) on iOS 6.1.x
-- **A Mac** (or a Linux PC), only for the first install
+- **A Mac®** (or a Linux® PC), only for the first install
 - **A 3D printer** for the case, 4 × M2 threaded inserts and 4 × M2×12 screws
-- **Your phone**, iPhone or Android, to run the scenario
+- **Your phone**, iPhone® or Android, to run the scenario
 - optional: **the finger sensor** of an old oximeter
 - optional: **about 30 g of TPU** for the bumper
 
@@ -91,8 +91,11 @@ from the console, on seeing it placed on the simulated patient, or by the partic
 
 Want to dig deeper? Everything is in [For developers](docs/sviluppo.md) (Italian).
 
-**Using Claude Code?** Open this folder and ask it to *"install the oximeter on my iPod"*:
-its instructions are already in [`CLAUDE.md`](CLAUDE.md).
+**Using Claude Code?** Connect the jailbroken iPod and tell it:
+*"Install the similFranz oximeter from https://github.com/Franz8787/similfranz-saturimetro"*.
+It downloads the project, checks the tools and installs the app: its instructions are in [`CLAUDE.md`](CLAUDE.md).
+Do you also have the [similFranz monitor](https://github.com/Franz8787/similfranz-monitor)? Ask for everything at once:
+it will have you connect one device at a time. A helping hand: the guides work on their own too.
 
 ## Work in progress
 
@@ -102,7 +105,7 @@ that become useful again for simulation. Star the project to be among the first 
 ## Always up to date, from your phone
 
 When a new version is out, the console on your phone tells you and installs it on the iPod with one tap:
-no computer, no files to move. The phone downloads it from GitHub and passes it to the iPod over the Wi-Fi that
+no computer, no files to move. The phone downloads it from GitHub® and passes it to the iPod over the Wi-Fi® that
 already connects them; the iPod reinstalls itself and reopens in a few seconds.
 
 ## Make it yours
@@ -121,8 +124,12 @@ from the phone with **your** versions. Steps (Italian) in [docs/sviluppo.md](doc
 - **The jailbreak** is done on your own device, at your own risk. The project points to the official
   public tools and does not distribute any Apple files.
 - Software and models are provided **"as is"**, without warranty (see licenses).
-- iPod®, iPod touch®, iPhone®, Mac® and Safari® are trademarks of Apple Inc., registered in the U.S. and other countries;
-  they are mentioned only to identify the compatible devices. GitHub® is a trademark of GitHub, Inc.
+- Apple®, iPod®, iPod touch®, iPhone®, Mac®, macOS®, Finder®, iTunes®, Xcode® and Safari® are trademarks of Apple Inc.,
+  registered in the U.S. and other countries; they are mentioned only to identify the compatible devices and software.
+  IOS is a trademark or registered trademark of Cisco in the U.S. and other countries and is used under license.
+  GitHub® is a trademark of GitHub, Inc.; Wi-Fi® of Wi-Fi Alliance; Linux® of Linus Torvalds; Android™ of Google LLC.
+  Other product and company names belong to their respective owners. This project is independent: it is not
+  affiliated with, sponsored or endorsed by any of these owners.
   The project is independent of Apple and of any medical or simulation device manufacturer.
 
 ## How to cite

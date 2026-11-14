@@ -1,11 +1,11 @@
 # Per sviluppatori
 
-Ti piace capire come funzionano le cose? Qui trovi come fare la tua versione (anche senza Mac), come compilare,
+Ti piace capire come funzionano le cose? Qui trovi come fare la tua versione (anche senza Mac®), come compilare,
 come provare sul Mac e come pilotare l'app via API.
 
 ## Fai la tua versione (senza Mac)
 
-GitHub può compilare l'app al posto tuo, su un suo Mac in cloud: è gratis per i progetti pubblici.
+GitHub® può compilare l'app al posto tuo, su un suo Mac in cloud: è gratis per i progetti pubblici.
 
 1. **Copia il progetto**: in alto su GitHub, **Fork**.
 2. **Attiva i due servizi** nella tua copia:
@@ -23,7 +23,7 @@ copia vedono la nuova versione nella console e si aggiornano dal telefono: l'app
 Per provare senza pubblicare nulla: **Actions › Pubblica una versione › Run workflow**. Il `.deb` compilato
 resta scaricabile tra gli *artifacts* dell'esecuzione.
 
-La prima installazione su ogni iPod passa da un computer: `app/scripts/aggiorna.sh tuo-utente/tuo-repository`
+La prima installazione su ogni iPod® passa da un computer: `app/scripts/aggiorna.sh tuo-utente/tuo-repository`
 (vedi [Installa l'app](02-installazione.md)).
 
 ## Compilare sul tuo computer
@@ -42,12 +42,12 @@ export SIMLAB_SDK=$PWD/sdk/theos-sdks/iPhoneOS9.3.sdk
 ```
 
 **SDK**: serve l'**iPhoneOS 9.3 SDK**, il più recente che compila ancora per armv7/iOS 6. Non è nel repository
-(è materiale Apple): `setup-sdk.sh` lo scarica dalla raccolta pubblica [theos/sdks](https://github.com/theos/sdks)
+(è materiale Apple®): `setup-sdk.sh` lo scarica dalla raccolta pubblica [theos/sdks](https://github.com/theos/sdks)
 a un commit fissato e completa i file `.tbd` che il linker moderno pretende (gli header restano quelli 9.3).
 
 Note:
 - target `armv7-apple-ios6.0` con `-Werror=unguarded-availability`: qualsiasi API più recente di iOS 6 è un errore
-- ARC sì in compilazione, **non** al link (Xcode moderno non ha più `libarclite`; su iOS 6 i simboli ARC ci sono già)
+- ARC sì in compilazione, **non** al link (Xcode® moderno non ha più `libarclite`; su iOS 6 i simboli ARC ci sono già)
 - **aggiornamento dal telefono**: la console invia il `.deb` a `POST /api/v1/update` (protetto dal PIN); l'app
   controlla che sia il pacchetto del saturimetro e lo passa a `/usr/libexec/similfranz-sat-aggiorna`
   (`app/helper/aggiorna.c`, setuid root, installato dal pacchetto), che accetta solo quel file da un percorso fisso,

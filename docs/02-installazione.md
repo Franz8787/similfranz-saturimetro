@@ -4,14 +4,14 @@ La prima volta serve un computer, per pochi minuti. Dopo, l'app si aggiorna **da
 
 ## Prepara il computer (una volta sola)
 
-- **Mac**: con [Homebrew](https://brew.sh) installato, nel Terminale: `brew install libimobiledevice`
-- **Linux**: `sudo apt install libimobiledevice-utils expect` (o l'equivalente della tua distribuzione)
+- **Mac®**: con [Homebrew](https://brew.sh) installato, nel Terminale: `brew install libimobiledevice`
+- **Linux®**: `sudo apt install libimobiledevice-utils expect` (o l'equivalente della tua distribuzione)
 
-Poi scarica questa cartella del progetto: pulsante verde **Code › Download ZIP** su GitHub, oppure `git clone`.
+Poi scarica questa cartella del progetto: pulsante verde **Code › Download ZIP** su GitHub®, oppure `git clone`.
 
 ## Installa
 
-Collega l'iPod via USB e sbloccalo. Nel Terminale, dalla cartella del progetto:
+Collega l'iPod® via USB e sbloccalo. Nel Terminale, dalla cartella del progetto:
 
 ```bash
 cd app
@@ -21,7 +21,7 @@ cd app
 Lo script scarica da GitHub **l'ultima versione pubblicata** e la installa: non devi cercare né spostare file.
 Quando ha finito, sull'iPod trovi l'icona **similFranzSat**.
 
-**Preferisci il Wi-Fi?** Con l'iPod sulla tua rete e il suo indirizzo IP a portata di mano:
+**Preferisci il Wi-Fi®?** Con l'iPod sulla tua rete e il suo indirizzo IP a portata di mano:
 `IPOD_HOST=192.168.x.y ./scripts/aggiorna.sh`
 
 ## Aggiornamenti: dal telefono, con un tocco

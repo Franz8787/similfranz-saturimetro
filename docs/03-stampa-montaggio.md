@@ -1,6 +1,6 @@
 # 3. Stampa e monta il guscio
 
-È il momento in cui l'iPod smette di sembrare un iPod. Due pezzi, un piatto solo, meno di due ore di stampa:
+È il momento in cui l'iPod® smette di sembrare un iPod. Due pezzi, un piatto solo, meno di due ore di stampa:
 la **cornice** bianca davanti, con finestra del display e conche per i tasti, e la **scocca** dietro,
 con l'ingresso per il cavo della sonda. Misure finali: 71,4 × 123,5 × 18 mm.
 
@@ -118,7 +118,7 @@ cd stampa3d/sorgenti
 ```
 
 In cima allo script trovi tutti i parametri: giochi, inserti, cavo, testo inciso. La scritta usa un font di sistema
-macOS (`TEXT_FONT`): su un altro sistema indica un font bastone in grassetto che hai installato, oppure lascia
+macOS® (`TEXT_FONT`): su un altro sistema indica un font bastone in grassetto che hai installato, oppure lascia
 `TEXT = ""` per un fianco liscio.
 
 Guscio chiuso? Manca solo il pezzo più bello: [4. Porta lo scenario in sala](04-uso-col-telefono.md)

@@ -1,4 +1,4 @@
-# 1. Sblocca l'iPod
+# 1. Sblocca l'iPod®
 
 Il primo passo è anche quello che fai una volta sola. Dopo, l'iPod è pronto ad accogliere il saturimetro
 e resta sbloccato anche quando lo spegni e lo riaccendi.
@@ -8,9 +8,9 @@ e resta sbloccato anche quando lo spegni e lo riaccendi.
 
 ## Prepara
 
-- l'iPod touch di 4ª generazione: controlla in Impostazioni › Generali › Info che sia il modello **A1367**
+- l'iPod touch® di 4ª generazione: controlla in Impostazioni › Generali › Info che sia il modello **A1367**
   con **iOS 6.1.6** (con una versione precedente, Legacy iOS Kit ti propone la strada adatta)
-- un Mac o un PC Linux e il cavo USB a 30 pin
+- un Mac® o un PC Linux® e il cavo USB a 30 pin
 - mezz'ora di tempo: la prima volta è un'avventura, la seconda una formalità
 
 ## Procedi

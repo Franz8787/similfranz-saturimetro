@@ -28,7 +28,7 @@ e lo porti dove serve: in sala, in reparto, al prossimo corso.
   il tono del polso scende con la saturazione, gli allarmi lampeggiano e suonano con la loro priorità.
 - **Un vero sensore da dito.** Il guscio ha l'ingresso per il cavo di una sonda recuperata da un
   saturimetro dismesso: il partecipante la applica come farà in reparto.
-- **La regia nel palmo della mano.** Inquadri il QR sullo schermo dell'iPod e il browser del telefono
+- **La regia nel palmo della mano.** Inquadri il QR sullo schermo dell'iPod® e il browser del telefono
   diventa la console: accensione e sonda sempre a portata di pollice, SpO₂ e polso subito o con una
   transizione graduale fino a 2 minuti, ritmo irregolare, bassa perfusione e il tempo che lo strumento
   impiega a trovare il polso dopo che la sonda è sul dito.
@@ -45,7 +45,7 @@ Software e modelli 3D sono gratis e open source.
 
 ## Ce n'è uno in ogni cassetto. Letteralmente.
 
-Tra il 2010 e il 2013 Apple ha venduto oltre 50 milioni di iPod touch, e per gran parte di quel periodo il
+Tra il 2010 e il 2013 Apple® ha venduto oltre 50 milioni di iPod touch, e per gran parte di quel periodo il
 modello in vendita era proprio la 4ª generazione. Oggi molti di quelli sono fermi in un cassetto, spenti,
 in attesa di un motivo per riaccendersi.
 
@@ -69,9 +69,9 @@ rifiuti elettronici ([Global E-waste Monitor 2024, UNITAR](https://unitar.org/in
 ## Cosa ti serve
 
 - **iPod touch di 4ª generazione** (modello A1367) con iOS 6.1.x
-- **Un Mac** (o un PC Linux), solo per la prima installazione
+- **Un Mac®** (o un PC Linux®), solo per la prima installazione
 - **Una stampante 3D** per il guscio, 4 inserti filettati M2 e 4 viti M2×12
-- **Il tuo telefono**, iPhone o Android, per guidare lo scenario
+- **Il tuo telefono**, iPhone® o Android, per guidare lo scenario
 - facoltativo: **il sensore da dito** di un vecchio saturimetro
 - facoltativo: **circa 30 g di TPU** per il bumper
 
@@ -101,8 +101,11 @@ Tutti i dettagli nella [guida all'uso](docs/04-uso-col-telefono.md#sulipod-tasti
 
 Vuoi metterci le mani più a fondo? Trovi tutto in [Per sviluppatori](docs/sviluppo.md).
 
-**Usi Claude Code?** Apri questa cartella e chiedigli *"installa il saturimetro sul mio iPod"*:
-le istruzioni per lui sono già in [`CLAUDE.md`](CLAUDE.md). Un aiuto in più, le guide bastano anche da sole.
+**Usi Claude Code?** Collega l'iPod già sbloccato e scrivigli:
+*"Installa il saturimetro similFranz da https://github.com/Franz8787/similfranz-saturimetro"*.
+Scarica il progetto, controlla gli strumenti e installa l'app: le istruzioni per lui sono in [`CLAUDE.md`](CLAUDE.md).
+Hai anche il [monitor similFranz](https://github.com/Franz8787/similfranz-monitor)? Chiedigli tutto insieme: ti fa
+collegare un dispositivo alla volta. Un aiuto in più, le guide bastano anche da sole.
 
 ## Work in progress
 
@@ -112,8 +115,8 @@ che tornano utili alla simulazione. Metti una stella al progetto e sarai tra i p
 ## Sempre aggiornato, dal telefono
 
 Quando esce una versione nuova, la console sul telefono te lo dice e la installa sull'iPod con un tocco:
-niente computer, niente file da spostare. Il telefono la scarica da GitHub e la passa all'iPod attraverso il
-Wi-Fi che già li collega; l'iPod si reinstalla e si riapre da solo. Dettagli in [Installa l'app](docs/02-installazione.md#aggiornamenti-dal-telefono-con-un-tocco).
+niente computer, niente file da spostare. Il telefono la scarica da GitHub® e la passa all'iPod attraverso il
+Wi-Fi® che già li collega; l'iPod si reinstalla e si riapre da solo. Dettagli in [Installa l'app](docs/02-installazione.md#aggiornamenti-dal-telefono-con-un-tocco).
 
 ## Fallo tuo
 
@@ -132,8 +135,11 @@ I passi sono in [Per sviluppatori › Fai la tua versione](docs/sviluppo.md#fai-
 - **Il jailbreak** lo fai sul tuo dispositivo, sotto la tua responsabilità. Il progetto rimanda agli
   strumenti pubblici ufficiali e non distribuisce file di Apple.
 - Software e modelli sono forniti **"così come sono"**, senza garanzie (vedi licenze).
-- iPod®, iPod touch®, iPhone®, Mac® e Safari® sono marchi di Apple Inc., registrati negli Stati Uniti e in altri Paesi;
-  sono citati solo per indicare i dispositivi compatibili. GitHub® è un marchio di GitHub, Inc.
+- Apple®, iPod®, iPod touch®, iPhone®, Mac®, macOS®, Finder®, iTunes®, Xcode® e Safari® sono marchi di Apple Inc.,
+  registrati negli Stati Uniti e in altri Paesi; sono citati solo per indicare i dispositivi e i programmi compatibili.
+  IOS è un marchio o marchio registrato di Cisco negli Stati Uniti e in altri Paesi, usato su licenza.
+  GitHub® è un marchio di GitHub, Inc.; Wi-Fi® di Wi-Fi Alliance; Linux® di Linus Torvalds; Android™ di Google LLC.
+  Gli altri nomi di prodotti e aziende appartengono ai rispettivi titolari. Il progetto è indipendente: non è affiliato, sponsorizzato né approvato da nessuno di questi titolari.
   Il progetto è indipendente da Apple e da qualsiasi produttore di dispositivi medici o di simulazione.
 
 ## Come citarlo
