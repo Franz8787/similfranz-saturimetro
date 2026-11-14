@@ -38,7 +38,12 @@ TBDS=(
 
 mkdir -p "$TC"
 if [ ! -d "$TC/theos-sdks/.git" ]; then
-  git clone --filter=blob:none --no-checkout "$REPO" "$TC/theos-sdks"
+  # con una rete instabile il primo tentativo può interrompersi: si riprova fino a 3 volte
+  for i in 1 2 3; do
+    git clone --filter=blob:none --no-checkout "$REPO" "$TC/theos-sdks" && break
+    rm -rf "$TC/theos-sdks"; [ "$i" = 3 ] && { echo "ERRORE: download dell'SDK non riuscito (rete?)" >&2; exit 1; }
+    echo "download interrotto, riprovo ($i/3)…"; sleep 5
+  done
 fi
 cd "$TC/theos-sdks"
 git sparse-checkout set iPhoneOS9.3.sdk
