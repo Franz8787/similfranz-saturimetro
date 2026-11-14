@@ -10,3 +10,6 @@ app/dist/
 __pycache__/
 # macOS
 .DS_Store
+
+# copia del pacchetto sulle Pages (la mette GitHub Actions a ogni Release)
+!docs/aggiornamenti/*.deb

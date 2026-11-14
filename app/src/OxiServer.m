@@ -1,4 +1,5 @@
 #import "OxiServer.h"
+#import "OxiUpdate.h"
 
 @interface OxiServer () <NSNetServiceDelegate>
 @end
@@ -114,6 +115,23 @@ static BOOL ConstantTimeEquals(NSString *a, NSString *b) {
         NSString *err = nil;
         if (![_state applyCommand:json error:&err]) return Err(400, err ?: @"invalid command");
         return [self okWithState];
+    }
+    // Aggiornamento dal telefono: GET = versione installata e repository da cui aggiornarsi; POST = il pacchetto .deb
+    // (anche quando l'iPod è collegato al monitor: riguarda l'app, non lo scenario)
+    if ([p isEqualToString:@"/api/v1/update"]) {
+        SLHTTPResponse *deny = [self checkAuth:req]; if (deny) return deny;
+        NSString *ver = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] ?: @"dev";
+        if ([m isEqualToString:@"GET"]) {
+            NSString *repo = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"SFUpdateRepo"] ?: @"";
+            return [SLHTTPResponse status:200 json:@{ @"ok": @YES, @"version": ver, @"repo": repo, @"package": OxiUpdatePackage,
+                                                      @"installer": @([OxiUpdate installerAvailable]) }];
+        }
+        if (![m isEqualToString:@"POST"]) return Err(405, @"method not allowed");
+        NSString *err = nil;
+        NSString *newVer = self.installHandler ? self.installHandler(req.body, &err) : [OxiUpdate installDeb:req.body error:&err];
+        if (!newVer) return Err(400, err ?: @"pacchetto non valido");
+        return [SLHTTPResponse status:202 json:@{ @"ok": @YES, @"from": ver, @"to": newVer,
+                                                  @"message": @"installazione in corso: l'app si riapre da sola fra pochi secondi" }];
     }
     return Err(404, @"not found");
 }

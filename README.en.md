@@ -99,11 +99,21 @@ its instructions are already in [`CLAUDE.md`](CLAUDE.md).
 The oximeter is the first piece of something bigger, made of other old Apple devices
 that become useful again for simulation. Star the project to be among the first to see it.
 
+## Always up to date, from your phone
+
+When a new version is out, the console on your phone tells you and installs it on the iPod with one tap:
+no computer, no files to move. The phone downloads it from GitHub and passes it to the iPod over the Wi-Fi that
+already connects them; the iPod reinstalls itself and reopens in a few seconds.
+
 ## Make it yours
 
 It is made for **simulation educators, instructors and facilitators**, and for anyone with a device
 to rescue from the drawer. Build it, adapt it to your scenarios and tell us what you improved: open an
 *issue* or propose a change. Every idea makes the tool better for the whole simulation community.
+
+**You don't need a Mac to make your own version.** Fork the project, enable *Actions* and *Pages*, edit what you
+want on GitHub and publish a *Release*: GitHub builds the app by itself. Oximeters installed from your fork update
+from the phone with **your** versions. Steps (Italian) in [docs/sviluppo.md](docs/sviluppo.md#fai-la-tua-versione-senza-mac).
 
 ## Good to know
 

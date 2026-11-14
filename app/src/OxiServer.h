@@ -19,4 +19,6 @@
 - (BOOL)startOnPort:(uint16_t)port error:(NSError **)error;
 - (void)stop;
 - (SLHTTPResponse *)handle:(SLHTTPRequest *)req;                 // esposto per i test
+// Test: sostituisce l'installazione vera (ritorna la versione installata o nil con errore)
+@property (nonatomic, copy) NSString *(^installHandler)(NSData *deb, NSString **error);
 @end

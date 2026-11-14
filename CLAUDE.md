@@ -7,10 +7,10 @@ Questo progetto è un saturimetro **simulato** per la formazione sanitaria che g
 
 1. Verifica gli strumenti sul Mac: `iproxy` e `idevice_id` (`brew install libimobiledevice`), `expect`.
 2. Verifica che l'iPod sia collegato via USB: `idevice_id -l`. Se non c'è, chiedi di collegarlo e sbloccarlo.
-3. Serve un `.deb` in `app/dist/`: se manca, chiedi di scaricarlo dalla pagina Releases
-   (o compila con `app/scripts/build.sh` + `package.sh` se l'utente ha l'SDK, vedi `docs/sviluppo.md`).
-4. Esegui `app/scripts/install.sh` (via Wi-Fi: `IPOD_HOST=<ip>`). La password di root è quella
-   predefinita del jailbreak, già negli script (`app/scripts/ipod-ssh.sh`); se l'utente l'ha cambiata, chiediglielo.
+3. Esegui `app/scripts/aggiorna.sh`: scarica da GitHub l'ultima versione pubblicata e la installa
+   (via Wi-Fi: `IPOD_HOST=<ip>`). Per un `.deb` compilato in locale: `app/scripts/install.sh`.
+   La password di root è quella predefinita del jailbreak, già negli script (`app/scripts/ipod-ssh.sh`); se l'utente l'ha cambiata, chiediglielo.
+4. Dalla 0.4.0 gli aggiornamenti si fanno dal telefono (console › Scenario › Aggiornamento dell'app).
 5. Se SSH non risponde: probabilmente manca OpenSSH, va installato da Cydia sull'iPod (passaggio manuale).
 
 ## Regole

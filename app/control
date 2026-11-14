@@ -1,6 +1,6 @@
 Package: it.simulafranz.saturimetro
 Name: similFranzSat (saturimetro simulato)
-Version: 0.3.1
+Version: 0.4.0
 Architecture: iphoneos-arm
 Description: Saturimetro palmare SIMULATO per la formazione sanitaria (NON e' un dispositivo medico). Console web per l'istruttore sulla porta 8080.
 Maintainer: ilFranz

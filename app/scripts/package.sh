@@ -25,6 +25,10 @@ def add_control(t):
         b = data.encode(); t.addfile(info(name, mode, len(b)), io.BytesIO(b))
 def add_data(t):
     for d in ["./", "./Applications/"]: t.addfile(info(d, 0o755, isdir=True))
+    # aiutante di installazione: setuid root (installa SOLO il pacchetto del saturimetro, da un percorso fisso)
+    helper = os.path.join(root, "build", "similfranz-sat-aggiorna")
+    for d in ["./usr/", "./usr/libexec/"]: t.addfile(info(d, 0o755, isdir=True))
+    with open(helper, "rb") as fh: t.addfile(info("./usr/libexec/similfranz-sat-aggiorna", 0o4755, os.path.getsize(helper)), fh)
     base = "./Applications/SimulaFranz_Saturimetro.app"
     for dirpath, dirs, files in os.walk(app):
         dirs.sort(); rel = os.path.relpath(dirpath, app); dest = base if rel == "." else f"{base}/{rel}"

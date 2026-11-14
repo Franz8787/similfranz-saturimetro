@@ -1,0 +1,77 @@
+# Pubblica una versione dell'app: si avvia da solo quando su GitHub crei una RELEASE (tag "vX.Y.Z").
+# Compila l'app su un Mac di GitHub (nessun Mac tuo, nessun SDK da procurarti), allega il .deb alla Release
+# e ne mette una copia sulle Pages: da lì la console sul telefono aggiorna l'iPod con un tocco.
+# Funziona allo stesso modo in ogni copia del progetto (fork): basta attivare Actions e Pages nel proprio repository.
+# "Run workflow" (a mano, dalla scheda Actions) = solo prova: compila e lascia il .deb tra gli artefatti, non pubblica nulla.
+name: Pubblica una versione
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+jobs:
+  pacchetto:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Strumenti (ldid)
+        run: brew install ldid
+
+      - name: SDK iOS (scaricato qui da theos/sdks, non è nel repository)
+        run: app/scripts/setup-sdk.sh
+
+      - name: Versione
+        id: v
+        run: |
+          V="$(sed -n 's/^Version: //p' app/control)"
+          echo "versione=$V" >> "$GITHUB_OUTPUT"
+          TAG="${{ github.event.release.tag_name }}"
+          if [ -n "$TAG" ] && [ "${TAG#v}" != "$V" ]; then
+            echo "::error::Il tag $TAG non corrisponde a 'Version: $V' in app/control: allinea i due numeri e ricrea la Release."
+            exit 1
+          fi
+
+      - name: Test, compilazione e pacchetto
+        env:
+          SIMLAB_SDK: ${{ github.workspace }}/app/sdk/theos-sdks/iPhoneOS9.3.sdk
+        run: |
+          app/scripts/test-mac.sh
+          app/scripts/build.sh
+          app/scripts/package.sh
+
+      - name: Pacchetto tra gli artefatti (anche nelle prove)
+        uses: actions/upload-artifact@v4
+        with:
+          name: deb-${{ steps.v.outputs.versione }}
+          path: app/dist/*.deb
+
+      - name: Allega il .deb alla Release
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${{ github.event.release.tag_name }}" app/dist/*.deb --clobber
+
+      - name: Copia sulle Pages (aggiornamento dal telefono)
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp app/dist/*.deb "$RUNNER_TEMP/"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin "${{ github.event.repository.default_branch }}"
+          git switch -C pagine "origin/${{ github.event.repository.default_branch }}"
+          mkdir -p docs/aggiornamenti
+          rm -f docs/aggiornamenti/*.deb
+          cp "$RUNNER_TEMP"/*.deb docs/aggiornamenti/
+          git add -f docs/aggiornamenti
+          if git diff --cached --quiet; then echo "nessuna modifica"; exit 0; fi
+          git commit -m "Pages: pacchetto ${{ steps.v.outputs.versione }} per l'aggiornamento dal telefono"
+          git push origin "pagine:${{ github.event.repository.default_branch }}"
+          gh api -X POST "repos/${{ github.repository }}/pages/builds" >/dev/null || echo "Pages: ricostruzione automatica (se attive)"

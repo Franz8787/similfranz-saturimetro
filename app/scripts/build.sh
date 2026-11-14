@@ -18,15 +18,22 @@ CFLAGS=(-target armv7-apple-ios$MIN_IOS -isysroot "$SDK" -fobjc-arc -Os -g0
         -Wall -Wno-unused-parameter -Wno-deprecated-declarations -Werror=unguarded-availability
         -Werror=objc-method-access -Werror=incompatible-pointer-types -Werror=implicit-function-declaration -I"$ROOT/src")
 FRAMEWORKS=(-framework UIKit -framework Foundation -framework CoreGraphics -framework QuartzCore
-            -framework AVFoundation -framework AudioToolbox -framework CoreFoundation)
+            -framework AVFoundation -framework AudioToolbox -framework CoreFoundation -lz)
 rm -rf "$BUILD/obj" "$APP"; mkdir -p "$BUILD/obj" "$APP"
 echo "== compilazione ($(xcrun clang --version | head -1))"
 for f in "$ROOT"/src/*.m; do echo "   $(basename "$f")"; xcrun clang "${CFLAGS[@]}" -c "$f" -o "$BUILD/obj/$(basename "${f%.m}").o"; done
 echo "== link"
 xcrun clang -target armv7-apple-ios$MIN_IOS -isysroot "$SDK" "${FRAMEWORKS[@]}" "$BUILD"/obj/*.o -o "$APP/SimulaFranz_Saturimetro" 2>&1 | grep -v "built for iOS Simulator" || true
 [ -f "$APP/SimulaFranz_Saturimetro" ] || die "link fallito"
+echo "== aiutante di installazione (aggiornamenti dal telefono)"
+xcrun clang -target armv7-apple-ios$MIN_IOS -isysroot "$SDK" -Os -Wall "$ROOT/helper/aggiorna.c" -o "$BUILD/similfranz-sat-aggiorna" 2>&1 | grep -v "built for iOS Simulator" || true
+ldid -S "$BUILD/similfranz-sat-aggiorna"
 echo "== bundle"
 plutil -convert binary1 -o "$APP/Info.plist" "$ROOT/assets/Info.plist"
+# repository da cui la console cerca gli aggiornamenti: quello da cui si compila (così ogni copia del progetto
+# si aggiorna dalle SUE versioni). Su GitHub Actions è GITHUB_REPOSITORY; sul Mac il remote "origin" di git.
+REPO_SLUG="${GITHUB_REPOSITORY:-$(git -C "$ROOT" remote get-url origin 2>/dev/null | sed -E 's#(\.git)?$##; s#^.*github\.com[:/]##')}"
+[ -n "$REPO_SLUG" ] && plutil -replace SFUpdateRepo -string "$REPO_SLUG" "$APP/Info.plist" && echo "   aggiornamenti da: $REPO_SLUG"
 printf 'APPL????' > "$APP/PkgInfo"
 cp "$ROOT"/assets/*.png "$APP/"
 cp -R "$ROOT/assets/Settings.bundle" "$APP/"

@@ -4,6 +4,8 @@
 #import "OxiEngine.h"
 #import "OxiLocalState.h"
 #import "OxiServer.h"
+#import "OxiUpdate.h"
+#include <zlib.h>
 static int passed = 0, failed = 0;
 #define CHECK(cond, msg) do { if (cond) passed++; else { failed++; printf("FALLITO: %s (riga %d)\n", msg, __LINE__); } } while (0)
 
@@ -19,6 +21,29 @@ static NSDictionary *state(NSDictionary *over) {
 static NSDictionary *oxi(NSDictionary *base, NSDictionary *over) {
     NSMutableDictionary *o = [base[@"oximeter"] mutableCopy]; [o addEntriesFromDictionary:over];
     NSMutableDictionary *s = [base mutableCopy]; s[@"oximeter"] = o; return s;
+}
+
+// --- per i test degli aggiornamenti: un .deb minimo costruito qui (ar + control.tar.gz con ./control) ---
+static NSData *TestGzip(NSData *d) {
+    z_stream z; memset(&z, 0, sizeof z); deflateInit2(&z, 9, Z_DEFLATED, 16 + MAX_WBITS, 8, Z_DEFAULT_STRATEGY);
+    NSMutableData *o = [NSMutableData dataWithLength:d.length + 1024];
+    z.next_in = (Bytef *)d.bytes; z.avail_in = (uInt)d.length; z.next_out = o.mutableBytes; z.avail_out = (uInt)o.length;
+    deflate(&z, Z_FINISH); o.length = z.total_out; deflateEnd(&z); return o;
+}
+static NSData *TestDeb(NSString *control) {
+    NSData *c = [control dataUsingEncoding:NSUTF8StringEncoding];
+    NSMutableData *tar = [NSMutableData dataWithLength:512];
+    char *h = tar.mutableBytes; strcpy(h, "./control"); strcpy(h + 100, "0000644"); snprintf(h + 124, 12, "%011lo", (unsigned long)c.length); h[156] = '0';
+    [tar appendData:c]; tar.length = 512 + (c.length + 511) / 512 * 512 + 1024;
+    NSData *gz = TestGzip(tar);
+    NSMutableData *deb = [[@"!<arch>\n" dataUsingEncoding:NSASCIIStringEncoding] mutableCopy];
+    NSArray *members = @[@[@"debian-binary", [@"2.0\n" dataUsingEncoding:NSASCIIStringEncoding]], @[@"control.tar.gz", gz]];
+    for (NSArray *m in members) {
+        NSData *d = m[1];
+        [deb appendData:[[NSString stringWithFormat:@"%-16s%-12d%-6d%-6d%-8s%-10lu`\n", [m[0] UTF8String], 0, 0, 0, "100644", (unsigned long)d.length] dataUsingEncoding:NSASCIIStringEncoding]];
+        [deb appendData:d]; if (d.length % 2) [deb appendBytes:"\n" length:1];
+    }
+    return deb;
 }
 
 int main(void) { @autoreleasepool {
@@ -235,6 +260,37 @@ int main(void) { @autoreleasepool {
     T += 31;
     CHECK(([S handle:req(@"GET", @"/api/v1/state", @"123456", nil)].status == 200), "blocco scaduto dopo 30 s");
 
+
+    // --- aggiornamenti dal telefono: controllo del pacchetto e API ---
+    NSString *okCtl = @"Package: it.simulafranz.saturimetro\nVersion: 0.4.0\nArchitecture: iphoneos-arm\nDescription: prova\n";
+    NSString *ue = nil;
+    NSDictionary *fields = [OxiUpdate inspectDeb:TestDeb(okCtl) error:&ue];
+    CHECK(([fields[@"Version"] isEqualToString:@"0.4.0"]), "aggiornamento: pacchetto valido letto");
+    CHECK(([OxiUpdate inspectDeb:TestDeb([okCtl stringByReplacingOccurrencesOfString:@"saturimetro\n" withString:@"monitor\n"]) error:&ue] == nil && [ue containsString:@"non è il saturimetro"]), "aggiornamento: pacchetto di un'altra app rifiutato");
+    CHECK(([OxiUpdate inspectDeb:TestDeb([okCtl stringByReplacingOccurrencesOfString:@"iphoneos-arm" withString:@"amd64"]) error:&ue] == nil), "aggiornamento: architettura sbagliata rifiutata");
+    CHECK(([OxiUpdate inspectDeb:[@"ciao" dataUsingEncoding:NSUTF8StringEncoding] error:&ue] == nil && [ue containsString:@".deb"]), "aggiornamento: file qualsiasi rifiutato");
+    NSMutableData *rotto = [TestDeb(okCtl) mutableCopy]; ((char *)rotto.mutableBytes)[rotto.length - 20] ^= 0x55;
+    CHECK(([OxiUpdate inspectDeb:rotto error:&ue] == nil), "aggiornamento: pacchetto danneggiato rifiutato");
+    CHECK(([OxiUpdate compareVersion:@"0.3.10" to:@"0.3.9"] == NSOrderedDescending && [OxiUpdate compareVersion:@"0.4" to:@"0.4.0"] == NSOrderedSame
+           && [OxiUpdate compareVersion:@"0.3.1" to:@"1.0.0"] == NSOrderedAscending), "aggiornamento: confronto delle versioni");
+    NSString *realDeb = [[NSProcessInfo processInfo] environment][@"TEST_DEB"];
+    if (realDeb.length) { NSDictionary *rf = [OxiUpdate inspectDeb:[NSData dataWithContentsOfFile:realDeb] error:&ue];
+        CHECK(([rf[@"Package"] isEqualToString:@"it.simulafranz.saturimetro"]), "aggiornamento: il .deb vero dell'app viene accettato"); }
+    __block NSData *installed = nil;
+    S.installHandler = ^NSString *(NSData *deb, NSString **err) { NSDictionary *f = [OxiUpdate inspectDeb:deb error:err]; if (f) installed = deb; return f[@"Version"]; };
+    T += 100;
+    CHECK(([S handle:req(@"GET", @"/api/v1/update", nil, nil)].status == 401), "aggiornamento: senza PIN -> 401");
+    SLHTTPResponse *ur = [S handle:req(@"GET", @"/api/v1/update", @"123456", nil)];
+    NSDictionary *uj = [NSJSONSerialization JSONObjectWithData:ur.body options:0 error:NULL];
+    CHECK((ur.status == 200 && uj[@"version"] && [uj[@"package"] isEqualToString:@"it.simulafranz.saturimetro"] && uj[@"installer"]), "aggiornamento: GET versione e stato dell'installatore");
+    SLHTTPRequest *up = req(@"POST", @"/api/v1/update", @"123456", nil); up.body = TestDeb(okCtl);
+    SLHTTPResponse *ur2 = [S handle:up];
+    CHECK((ur2.status == 202 && installed.length > 0), "aggiornamento: pacchetto valido accettato (202)");
+    installed = nil; up.body = [@"non sono un deb" dataUsingEncoding:NSUTF8StringEncoding];
+    CHECK(([S handle:up].status == 400 && installed == nil), "aggiornamento: pacchetto non valido -> 400, nulla installato");
+    S.monitorURL = @"http://192.168.0.10:8080/"; up.body = TestDeb(okCtl);
+    CHECK(([S handle:up].status == 202), "aggiornamento: possibile anche quando l'iPod è collegato al monitor");
+    S.monitorURL = nil;
     printf("Test superati: %d   falliti: %d\n", passed, failed);
     return failed ? 1 : 0;
 } }

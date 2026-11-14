@@ -9,6 +9,8 @@
 
 static const NSUInteger kMaxHeaderBytes = 8 * 1024;
 static const NSUInteger kMaxBodyBytes   = 16 * 1024;
+static const NSUInteger kMaxUploadBytes = 4 * 1024 * 1024;       // solo POST /api/v1/update (pacchetto dell'app)
+static const int64_t    kUploadTimeoutNs = 60 * NSEC_PER_SEC;
 static const int64_t    kTimeoutNs      = 5 * NSEC_PER_SEC;
 static const NSUInteger kMaxConnections = 8;
 
@@ -60,7 +62,7 @@ static NSString *SLReason(NSInteger s) {
     NSMutableData *_buffer;
     NSInteger _headerEnd;       // indice fine header (dopo \r\n\r\n), -1 se non ancora
     NSUInteger _contentLength;
-    BOOL _closed, _responded;
+    BOOL _closed, _responded, _upload;
 }
 
 - (instancetype)initWithFD:(int)fd remote:(NSString *)remote queue:(dispatch_queue_t)q
@@ -83,7 +85,7 @@ static NSString *SLReason(NSInteger s) {
     // timeout complessivo della richiesta (protezione da client lenti)
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, kTimeoutNs), _queue, ^{
         SLHTTPConnection *s = weakSelf;
-        if (s && !s->_closed && !s->_responded) [s respond:[SLHTTPResponse status:408 json:@{@"ok": @NO, @"error": @"request timeout"}]];
+        if (s && !s->_closed && !s->_responded && !s->_upload) [s respond:[SLHTTPResponse status:408 json:@{@"ok": @NO, @"error": @"request timeout"}]];
     });
 }
 
@@ -111,7 +113,7 @@ static NSString *SLReason(NSInteger s) {
     }
     SLHTTPRequest *req = [self parseHeaders];
     if (!req) { [self respond:[SLHTTPResponse status:400 json:@{@"ok": @NO, @"error": @"malformed request"}]]; return; }
-    if (_contentLength > kMaxBodyBytes) {
+    if (_contentLength > (_upload ? kMaxUploadBytes : kMaxBodyBytes)) {
         [self respond:[SLHTTPResponse status:413 json:@{@"ok": @NO, @"error": @"payload too large"}]];
         return;
     }
@@ -160,7 +162,16 @@ static NSString *SLReason(NSInteger s) {
         NSScanner *sc = [NSScanner scannerWithString:cl];
         long long len = -1;
         if (![sc scanLongLong:&len] || !sc.isAtEnd || len < 0) return nil;
-        _contentLength = (NSUInteger)MIN(len, (long long)kMaxBodyBytes + 1);
+        BOOL upload = [req.method isEqualToString:@"POST"] && [req.path isEqualToString:@"/api/v1/update"];
+        if (upload && !_upload) {          // un pacchetto è più grande e più lento: limite e tempo dedicati
+            _upload = YES;
+            __weak SLHTTPConnection *weakSelf = self;
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, kUploadTimeoutNs), _queue, ^{
+                SLHTTPConnection *c = weakSelf;
+                if (c && !c->_closed && !c->_responded) [c respond:[SLHTTPResponse status:408 json:@{@"ok": @NO, @"error": @"request timeout"}]];
+            });
+        }
+        _contentLength = (NSUInteger)MIN(len, (long long)(upload ? kMaxUploadBytes : kMaxBodyBytes) + 1);
     } else {
         _contentLength = 0;
     }

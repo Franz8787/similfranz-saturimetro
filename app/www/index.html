@@ -86,6 +86,10 @@ input[type=range]::-moz-range-thumb { width:32px; height:32px; border-radius:50%
 .login button { width:100%; }
 .foot { text-align:center; color:var(--ink3); font-size:11px; letter-spacing:.08em; margin:16px 0 6px; }
 a { color:var(--acc); }
+.upd { background:var(--bg2); border:1px solid var(--line); border-radius:var(--r); padding:12px; display:flex; flex-direction:column; gap:8px; }
+.upd.new { border-color:var(--acc); }
+.upd .notes { font-size:13px; color:var(--ink2); white-space:pre-line; max-height:120px; overflow-y:auto; }
+.upd input[type=file] { font-size:13px; color:var(--ink2); }
 </style>
 </head>
 <body>
@@ -154,6 +158,14 @@ a { color:var(--acc); }
     <p class="hint" style="margin:0">Riporta il paziente ai valori iniziali (97 % · 78 bpm), stacca il sensore e spegne il saturimetro: pronto per il prossimo gruppo.</p>
     <button id="reset" class="danger" style="min-height:64px">Azzera scenario</button>
     <p id="msg" class="err"></p>
+    <div class="upd" id="upd">
+      <div class="lbl" style="margin:0">Aggiornamento dell'app</div>
+      <div id="updText" class="devinfo">Controllo degli aggiornamenti…</div>
+      <div id="updNotes" class="notes" hidden></div>
+      <button id="updGo" class="primary" hidden></button>
+      <p id="updManual" class="hint" style="margin:0" hidden></p>
+      <label class="hint" style="margin:0">Oppure installa un pacchetto <b>.deb</b> già scaricato sul telefono:<br><input id="updFile" type="file" accept=".deb,application/octet-stream,application/vnd.debian.binary-package"></label>
+    </div>
     <p class="foot">SIMULAZIONE — NON PER USO CLINICO<br><span id="dev"></span></p>
   </div>
 
@@ -161,7 +173,7 @@ a { color:var(--acc); }
     <button data-t="paz" class="sel"><svg viewBox="0 0 24 24"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg>Paziente<span class="dot" id="dot-paz"></span></button>
     <button data-t="sat"><svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M10 18h4"/></svg>Saturimetro<span class="dot" id="dot-sat"></span></button>
     <button data-t="all"><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg>Allarmi<span class="dot" id="dot-all"></span></button>
-    <button data-t="sce"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v6h6"/></svg>Scenario<span class="dot"></span></button>
+    <button data-t="sce"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v6h6"/></svg>Scenario<span class="dot" id="dot-sce"></span></button>
   </nav>
 </div>
 
@@ -197,8 +209,10 @@ a { color:var(--acc); }
     render(j.state);
   }
   function showLogin(err) { clearInterval(pollT); pollT = null; $('login').hidden = false; $('console').hidden = true; $('linked').hidden = true; $('loginErr').textContent = err || ''; clearPending(); }
-  function showLinked(url) { $('login').hidden = true; $('console').hidden = true; $('linked').hidden = false; $('monitorLink').href = url; $('monitorLink').textContent = 'Apri la console del monitor (' + url + ')'; clearPending(); }
-  function showConsole() { $('login').hidden = true; $('linked').hidden = true; $('console').hidden = false; if (!pollT) pollT = setInterval(poll, 1000); }
+  function showLinked(url) { $('login').hidden = true; $('console').hidden = true; $('linked').hidden = false; $('monitorLink').href = url; $('monitorLink').textContent = 'Apri la console del monitor (' + url + ')'; clearPending();
+    $('linked').appendChild($('upd')); $('upd').style.textAlign = 'left'; setTimeout(function () { checkUpdate(false); }, 1500); }   // l'app si aggiorna anche da qui
+  function showConsole() { $('login').hidden = true; $('linked').hidden = true; $('console').hidden = false; if (!pollT) pollT = setInterval(poll, 1000);
+    if ($('upd').parentNode !== $('tab-sce')) $('tab-sce').insertBefore($('upd'), $('tab-sce').querySelector('.foot')); setTimeout(function () { checkUpdate(false); }, 1500); }
   function poll() { if (!inflight) api('GET', '/api/v1/state').then(handle); }
   function fmt(s) { return Math.floor(s / 60) + ':' + ('0' + (s % 60)).slice(-2); }
 
@@ -313,6 +327,68 @@ a { color:var(--acc); }
     });
   };
   $('logout').onclick = function () { token = ''; store('sfo_token', null); showLogin(''); };
+
+  // ---------- aggiornamento dell'app dal telefono ----------
+  // L'iPod (iOS 6) non può parlare con GitHub; il telefono sì. La console chiede all'iPod versione e repository,
+  // cerca su GitHub l'ultima versione pubblicata, scarica il .deb (copia sulle Pages del repo, che il browser può
+  // leggere) e lo passa all'iPod, che lo controlla e si reinstalla da solo. Chi ha copiato il progetto si aggiorna
+  // dalle SUE versioni: il repository lo dice l'app stessa (è quello da cui è stata compilata).
+  var upd = { checked: 0, latest: null, url: '', page: '', busy: false };
+  function vcmp(a, b) { a = String(a).split('.'); b = String(b).split('.'); for (var i = 0; i < Math.max(a.length, b.length); i++) { var x = parseInt(a[i] || 0, 10), y = parseInt(b[i] || 0, 10); if (x !== y) return x < y ? -1 : 1; } return 0; }
+  function updSay(t, notes) { $('updText').innerHTML = t; $('updNotes').hidden = !notes; $('updNotes').textContent = notes || ''; }
+  function checkUpdate(force) {
+    if (upd.busy || (!force && Date.now() - upd.checked < 6 * 3600 * 1000)) return;
+    upd.checked = Date.now();
+    api('GET', '/api/v1/update').then(function (me) {
+      if (!me.ok) { updSay('L\'iPod non risponde.'); return; }
+      upd.installer = me.installer; upd.current = me.version;
+      if (!me.repo) { updSay('Versione installata: <b>' + me.version + '</b>. Repository non indicato: installa un pacchetto scaricato.'); return; }
+      var owner = me.repo.split('/')[0], name = me.repo.split('/')[1];
+      upd.page = 'https://github.com/' + me.repo + '/releases/latest';
+      fetch('https://api.github.com/repos/' + me.repo + '/releases/latest', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (rel) {
+        if (!rel || !rel.tag_name) { updSay('Versione installata: <b>' + me.version + '</b>. Nessuna versione pubblicata su ' + me.repo + '.'); return; }
+        var v = rel.tag_name.replace(/^v/, ''), deb = null;
+        (rel.assets || []).forEach(function (a) { if (/\.deb$/.test(a.name)) deb = a; });
+        upd.latest = v; upd.url = deb ? 'https://' + owner.toLowerCase() + '.github.io/' + name + '/aggiornamenti/' + deb.name : '';
+        upd.manual = deb ? deb.browser_download_url : upd.page;
+        var newer = vcmp(v, me.version) > 0;
+        $('upd').className = 'upd' + (newer ? ' new' : ''); $('dot-sce').className = 'dot' + (newer ? ' show' : '');
+        if (!newer) { updSay('Versione installata: <b>' + me.version + '</b>. È la più recente.'); $('updGo').hidden = true; $('updManual').hidden = true; return; }
+        updSay('È disponibile la versione <b>' + v + '</b> (sull\'iPod c\'è la ' + me.version + ').', (rel.body || '').slice(0, 600));
+        $('updGo').hidden = !deb || !me.installer; $('updGo').textContent = 'Installa la versione ' + v;
+        $('updManual').hidden = false;
+        $('updManual').innerHTML = !me.installer ? 'Questa versione dell\'app non sa ancora aggiornarsi da sola: aggiornala una volta dal Mac (<b>aggiorna.sh</b>).'
+          : 'Se l\'installazione non parte, <a href="' + upd.manual + '" target="_blank" rel="noopener">scarica il pacchetto</a> e sceglilo qui sotto.';
+      }).catch(function () { updSay('Versione installata: <b>' + me.version + '</b>. Per cercare aggiornamenti il telefono deve avere internet.'); });
+    });
+  }
+  function sendDeb(buf, ver) {
+    upd.busy = true; $('updGo').disabled = true; updSay('Invio del pacchetto all\'iPod…');
+    fetch('/api/v1/update', { method: 'POST', headers: { 'X-SimulaFranz-Token': token, 'Content-Type': 'application/octet-stream' }, body: buf })
+      .then(function (r) { return r.json().then(function (j) { j._status = r.status; return j; }); })
+      .then(function (j) {
+        if (j._status !== 202) { upd.busy = false; $('updGo').disabled = false; updSay('<span style="color:#ff8a8a">Non installato: ' + (j.error || ('errore ' + j._status)) + '</span>'); return; }
+        updSay('Installazione della versione <b>' + j.to + '</b>: l\'app sull\'iPod si chiude e si riapre da sola…');
+        var t0 = Date.now();
+        (function wait() {
+          fetch('/api/v1/health', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (h) {
+            if (h.version === j.to) { upd.busy = false; $('updGo').disabled = false; $('updGo').hidden = true; $('updManual').hidden = true; $('dot-sce').className = 'dot'; updSay('Fatto: sull\'iPod ora c\'è la versione <b>' + h.version + '</b>.'); }
+            else if (Date.now() - t0 < 90000) setTimeout(wait, 2000); else { upd.busy = false; updSay('L\'iPod non conferma la nuova versione: riapri l\'app sull\'iPod.'); }
+          }).catch(function () { if (Date.now() - t0 < 90000) setTimeout(wait, 2000); else { upd.busy = false; updSay('L\'iPod non risponde: riapri l\'app sull\'iPod.'); } });
+        })();
+      }).catch(function () { upd.busy = false; $('updGo').disabled = false; updSay('<span style="color:#ff8a8a">Invio non riuscito.</span>'); });
+  }
+  $('updGo').onclick = function () {
+    if (!upd.url) return;
+    updSay('Scarico la versione ' + upd.latest + ' da GitHub…');
+    fetch(upd.url, { cache: 'no-store' }).then(function (r) { if (!r.ok) throw 0; return r.arrayBuffer(); })
+      .then(function (b) { sendDeb(b, upd.latest); })
+      .catch(function () { updSay('Download automatico non riuscito: <a href="' + upd.manual + '" target="_blank" rel="noopener">scarica il pacchetto</a> e sceglilo qui sotto.'); });
+  };
+  $('updFile').onchange = function () {
+    var f = this.files && this.files[0]; if (!f) return;
+    var rd = new FileReader(); rd.onload = function () { sendDeb(rd.result); }; rd.readAsArrayBuffer(f); this.value = '';
+  };
 
   if (token) api('GET', '/api/v1/state').then(function (j) {
     if (j.ok) { showConsole(); render(j.state); }

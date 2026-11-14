@@ -95,7 +95,7 @@ Tutti i dettagli nella [guida all'uso](docs/04-uso-col-telefono.md#sulipod-tasti
 ## Quattro passi, un pomeriggio
 
 1. [Sblocca l'iPod](docs/01-jailbreak.md): uno strumento gratuito, una volta sola.
-2. [Installa l'app](docs/02-installazione.md): un comando dal Mac.
+2. [Installa l'app](docs/02-installazione.md): un comando dal computer, la prima volta. Poi si aggiorna dal telefono.
 3. [Stampa e monta il guscio](docs/03-stampa-montaggio.md): due pezzi, un piatto solo. E se vuoi, il bumper in TPU.
 4. [Porta lo scenario in sala](docs/04-uso-col-telefono.md): hotspot, QR code, e si parte.
 
@@ -109,11 +109,22 @@ le istruzioni per lui sono già in [`CLAUDE.md`](CLAUDE.md). Un aiuto in più, l
 Il saturimetro è il primo pezzo di qualcosa di più grande, fatto di altri vecchi dispositivi Apple
 che tornano utili alla simulazione. Metti una stella al progetto e sarai tra i primi a vederlo.
 
+## Sempre aggiornato, dal telefono
+
+Quando esce una versione nuova, la console sul telefono te lo dice e la installa sull'iPod con un tocco:
+niente computer, niente file da spostare. Il telefono la scarica da GitHub e la passa all'iPod attraverso il
+Wi-Fi che già li collega; l'iPod si reinstalla e si riapre da solo. Dettagli in [Installa l'app](docs/02-installazione.md#aggiornamenti-dal-telefono-con-un-tocco).
+
 ## Fallo tuo
 
 È pensato per **formatori, istruttori e facilitatori di simulazione**, e per chiunque abbia un
 dispositivo da salvare dal cassetto. Costruiscilo, adattalo ai tuoi scenari e racconta cosa hai migliorato: apri una *issue* o proponi
 una modifica. Ogni idea rende lo strumento migliore per tutta la comunità della simulazione.
+
+**Non serve un Mac per fare la tua versione.** Fai una copia del progetto (*Fork*), attiva *Actions* e *Pages*,
+modifica quello che vuoi direttamente su GitHub e pubblica una *Release*: GitHub compila l'app da solo e la mette
+a disposizione. I saturimetri installati dalla tua copia si aggiornano dal telefono con le **tue** versioni.
+I passi sono in [Per sviluppatori › Fai la tua versione](docs/sviluppo.md#fai-la-tua-versione-senza-mac).
 
 ## Da sapere
 
