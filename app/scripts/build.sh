@@ -30,6 +30,9 @@ xcrun clang -target armv7-apple-ios$MIN_IOS -isysroot "$SDK" -Os -Wall "$ROOT/he
 ldid -S "$BUILD/similfranz-sat-aggiorna"
 echo "== bundle"
 plutil -convert binary1 -o "$APP/Info.plist" "$ROOT/assets/Info.plist"
+# la versione dell'app viene SOLO da "control" (la stessa che vede dpkg): così non possono divergere
+APP_VERSION="$(sed -n 's/^Version: //p' "$ROOT/control")"
+plutil -replace CFBundleShortVersionString -string "$APP_VERSION" "$APP/Info.plist"
 # repository da cui la console cerca gli aggiornamenti: quello da cui si compila (così ogni copia del progetto
 # si aggiorna dalle SUE versioni). Su GitHub Actions è GITHUB_REPOSITORY; sul Mac il remote "origin" di git.
 REPO_SLUG="${GITHUB_REPOSITORY:-$(git -C "$ROOT" remote get-url origin 2>/dev/null | sed -E 's#(\.git)?$##; s#^.*github\.com[:/]##')}"
