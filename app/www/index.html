@@ -354,7 +354,7 @@ a { color:var(--acc); }
         var newer = vcmp(v, me.version) > 0;
         $('upd').className = 'upd' + (newer ? ' new' : ''); $('dot-sce').className = 'dot' + (newer ? ' show' : '');
         if (!newer) { updSay('Versione installata: <b>' + me.version + '</b>. È la più recente.'); $('updGo').hidden = true; $('updManual').hidden = true; return; }
-        updSay('È disponibile la versione <b>' + v + '</b> (sull\'iPod c\'è la ' + me.version + ').', (rel.body || '').slice(0, 600));
+        updSay('È disponibile la versione <b>' + v + '</b> (sull\'iPod c\'è la ' + me.version + ').', (rel.body || '').replace(/[*`#_]/g, '').slice(0, 600));
         $('updGo').hidden = !deb || !me.installer; $('updGo').textContent = 'Installa la versione ' + v;
         $('updManual').hidden = false;
         $('updManual').innerHTML = !me.installer ? 'Questa versione dell\'app non sa ancora aggiornarsi da sola: aggiornala una volta dal Mac (<b>aggiorna.sh</b>).'
@@ -371,7 +371,9 @@ a { color:var(--acc); }
         updSay('Installazione della versione <b>' + j.to + '</b>: l\'app sull\'iPod si chiude e si riapre da sola…');
         var t0 = Date.now();
         (function wait() {
-          fetch('/api/v1/health', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (h) {
+          // limite di 4 s per richiesta: mentre l'app si riavvia una connessione può restare appesa
+          var ctl = window.AbortController ? new AbortController() : null, to = setTimeout(function () { if (ctl) ctl.abort(); }, 4000);
+          fetch('/api/v1/health?t=' + Date.now(), { cache: 'no-store', signal: ctl ? ctl.signal : undefined }).then(function (r) { clearTimeout(to); return r.json(); }).then(function (h) {
             if (h.version === j.to) { upd.busy = false; $('updGo').disabled = false; $('updGo').hidden = true; $('updManual').hidden = true; $('dot-sce').className = 'dot'; updSay('Fatto: sull\'iPod ora c\'è la versione <b>' + h.version + '</b>.'); }
             else if (Date.now() - t0 < 90000) setTimeout(wait, 2000); else { upd.busy = false; updSay('L\'iPod non conferma la nuova versione: riapri l\'app sull\'iPod.'); }
           }).catch(function () { if (Date.now() - t0 < 90000) setTimeout(wait, 2000); else { upd.busy = false; updSay('L\'iPod non risponde: riapri l\'app sull\'iPod.'); } });
