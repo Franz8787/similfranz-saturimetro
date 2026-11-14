@@ -4,7 +4,7 @@
 
 🇮🇹 [Leggi in italiano](README.md)
 
-**That old iPod touch 4 in the drawer still has one more shift to work.**
+**That old iPod touch® 4 in the drawer still has one more shift to work.**
 
 With a 3D printer and an afternoon of tinkering it becomes a simulation pulse oximeter:
 SpO₂, pulse rate, plethysmography and alarms, all driven from your phone. Put it in your pocket
@@ -121,7 +121,8 @@ from the phone with **your** versions. Steps (Italian) in [docs/sviluppo.md](doc
 - **The jailbreak** is done on your own device, at your own risk. The project points to the official
   public tools and does not distribute any Apple files.
 - Software and models are provided **"as is"**, without warranty (see licenses).
-- "iPod" and "iPod touch" are trademarks of Apple Inc., mentioned only to identify the compatible device.
+- iPod®, iPod touch®, iPhone®, Mac® and Safari® are trademarks of Apple Inc., registered in the U.S. and other countries;
+  they are mentioned only to identify the compatible devices. GitHub® is a trademark of GitHub, Inc.
   The project is independent of Apple and of any medical or simulation device manufacturer.
 
 ## How to cite

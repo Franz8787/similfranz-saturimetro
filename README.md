@@ -4,7 +4,7 @@
 
 🇬🇧 [Read in English](README.en.md)
 
-**Quel vecchio iPod touch 4 nel cassetto ha ancora un turno da fare.**
+**Quel vecchio iPod touch® 4 nel cassetto ha ancora un turno da fare.**
 
 Con una stampante 3D e un pomeriggio di smanettamento diventa un saturimetro da simulazione:
 SpO₂, polso, pletismografia e allarmi, che comandi dal tuo telefono. Lo metti in tasca
@@ -132,7 +132,8 @@ I passi sono in [Per sviluppatori › Fai la tua versione](docs/sviluppo.md#fai-
 - **Il jailbreak** lo fai sul tuo dispositivo, sotto la tua responsabilità. Il progetto rimanda agli
   strumenti pubblici ufficiali e non distribuisce file di Apple.
 - Software e modelli sono forniti **"così come sono"**, senza garanzie (vedi licenze).
-- "iPod" e "iPod touch" sono marchi di Apple Inc., citati solo per indicare il dispositivo compatibile.
+- iPod®, iPod touch®, iPhone®, Mac® e Safari® sono marchi di Apple Inc., registrati negli Stati Uniti e in altri Paesi;
+  sono citati solo per indicare i dispositivi compatibili. GitHub® è un marchio di GitHub, Inc.
   Il progetto è indipendente da Apple e da qualsiasi produttore di dispositivi medici o di simulazione.
 
 ## Come citarlo
