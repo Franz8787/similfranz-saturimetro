@@ -18,8 +18,8 @@ identifiers:
     value: 10.5281/zenodo.24064777
     description: "Tutte le versioni su Zenodo / All versions on Zenodo"
   - type: doi
-    value: 10.5281/zenodo.24064778
-    description: "Versione 0.3.1"
+    value: 10.5281/zenodo.24221665
+    description: "Versione 0.4.0"
 date-released: 2026-11-14
 license: GPL-3.0-only
 repository-code: "https://github.com/Franz8787/similfranz-saturimetro"
