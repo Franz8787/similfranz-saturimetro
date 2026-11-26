@@ -204,12 +204,16 @@ html{scroll-padding-top:56px}
 @media (max-width:640px){.sf-eco{gap:8px}.sf-eco .hub em,.sf-eco .l{display:none}.sf-eco .s{display:inline}.sf-eco nav a{padding:7px 9px}}
 @media (prefers-reduced-motion:reduce){.sf-eco,.sf-eco nav a i,.sf-eco .hub .hd,.sf-eco .rt.al{animation:none}.sf-eco{transition:none}}
 </style>
-<div class="sf-eco" id="sf-eco" role="navigation" aria-label="Ecosistema similFranz" style="--acc:#5fd4ff">
+<div class="sf-eco has-sec" id="sf-eco" role="navigation" aria-label="Ecosistema similFranz" style="--acc:#5fd4ff">
   <canvas aria-hidden="true"></canvas>
   <a class="hub" href="https://franz8787.github.io/similfranz/" title="Torna all'ecosistema similFranz"><b>←</b> similFranz <em>ecosistema</em></a>
   <span class="rt" aria-hidden="true" title="Ritmo dimostrativo">RS 72</span>
+  <div class="sec"><a href="#scenario">Scenario</a><a href="#riuso">Riuso</a><a href="#come">Costruzione</a><a href="#guscio">Guscio</a><a href="#open">Open source</a><a href="#chi">Chi c'è dietro</a></div>
+<details class="sw"><summary>Strumenti</summary><div><a href="https://franz8787.github.io/similfranz-saturimetro/" aria-current="page" style="--a:#5fd4ff"><i></i><span class="l">Saturimetro</span><span class="s">Sat</span></a><a href="https://franz8787.github.io/similfranz-monitor/" style="--a:#46f2a0"><i></i><span class="l">Monitor iPad</span><span class="s">iPad</span></a><a href="https://franz8787.github.io/similfranz-monitor-android/" style="--a:#ffbe5c"><i></i><span class="l">Monitor Android</span><span class="s">Android</span></a></div></details>
+<a class="cta" href="#come">Inizia</a>
   <nav aria-label="Gli strumenti similFranz"><a href="https://franz8787.github.io/similfranz-saturimetro/" aria-current="page" style="--a:#5fd4ff"><i></i><span class="l">Saturimetro</span><span class="s">Sat</span></a><a href="https://franz8787.github.io/similfranz-monitor/" style="--a:#46f2a0"><i></i><span class="l">Monitor iPad</span><span class="s">iPad</span></a><a href="https://franz8787.github.io/similfranz-monitor-android/" style="--a:#ffbe5c"><i></i><span class="l">Monitor Android</span><span class="s">Android</span></a></nav>
 </div>
+<style>.nav{display:none!important}</style>
 <script>
 (function(){
 var bar=document.getElementById("sf-eco"),t0=0;function sc(){t0=0;bar.classList.toggle("c",scrollY>40)}
@@ -285,7 +289,7 @@ requestAnimationFrame(function(n){last=n;step(n)});
   </div>
 </header>
 
-<section class="band room">
+<section class="band room" id="chi">
   <div class="wrap split">
     <div>
       <span class="eyebrow">Chi c'è dietro</span>
@@ -306,7 +310,7 @@ requestAnimationFrame(function(n){last=n;step(n)});
   </div>
 </section>
 
-<section class="band">
+<section class="band" id="scenario">
   <div class="wrap split">
     <div>
       <span class="eyebrow">Durante lo scenario</span>
@@ -358,7 +362,7 @@ requestAnimationFrame(function(n){last=n;step(n)});
   </div>
 </section>
 
-<section class="band room">
+<section class="band room" id="riuso">
   <div class="wrap split">
     <div>
       <span class="eyebrow">Riuso</span>
@@ -414,7 +418,7 @@ requestAnimationFrame(function(n){last=n;step(n)});
   </div>
 </section>
 
-<section class="band tight">
+<section class="band tight" id="guscio">
   <div class="wrap shell">
     <img src="img/saturimetro_in_mano.jpg" alt="Il saturimetro acceso in mano: SpO2 96, polso 78, curva pletismografica, tastiera blu e sensore da dito collegato" width="900" height="1200">
     <div>
@@ -446,7 +450,7 @@ requestAnimationFrame(function(n){last=n;step(n)});
   </div>
 </section>
 
-<section class="band tight">
+<section class="band tight" id="open">
   <div class="wrap split">
     <div>
       <span class="eyebrow">Open source</span>
