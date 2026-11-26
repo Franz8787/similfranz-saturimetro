@@ -194,18 +194,18 @@ html{scroll-padding-top:78px}
 @keyframes sfEcoDrop{from{opacity:0;transform:translateY(-4px)}}
 @keyframes sfEcoBeat{0%{box-shadow:0 0 0 0 var(--a)}12%{box-shadow:0 0 0 4px rgba(255,255,255,.12)}40%,100%{box-shadow:0 0 0 7px transparent}}
 @keyframes sfEcoAl{50%{opacity:.35}}
-@media (max-width:1000px){.sf-eco .sec{display:none}.sf-eco .rgt{margin-left:auto}}
+@media (max-width:1220px){.sf-eco .sec{display:none}.sf-eco .rgt{margin-left:auto}}
 @media (max-width:640px){.sf-eco{gap:6px}.sf-eco .hub em,.sf-eco .cta{display:none}.sf-eco .hub{padding:0 8px 0 4px}
   .sf-eco .seg a{padding:0 9px;gap:5px}.sf-eco .seg .l{display:none}.sf-eco .seg .s{display:inline}}
 @media (max-width:360px){.sf-eco .hub strong{display:none}}
 @media (prefers-reduced-motion:reduce){.sf-eco,.sf-eco .hub .hd,.sf-eco .rt.al{animation:none}.sf-eco{transition:none}}
 </style>
-<div class="sf-eco" id="sf-eco" role="navigation" aria-label="Ecosistema similFranz" style="--acc:#5fd4ff">
+<div class="sf-eco" id="sf-eco" role="navigation" aria-label="Ecosistema similFranz" style="--acc:#5fd4ff" data-onda="pleth">
   <span class="pg" aria-hidden="true"></span>
   <a class="hub" href="https://franz8787.github.io/similfranz/" title="Torna all'ecosistema similFranz"><b>←</b> <strong>similFranz</strong> <em>ecosistema</em></a>
   <span class="lane" aria-hidden="true"><canvas></canvas></span>
   <div class="sec"><a href="#scenario">Scenario</a><a href="#riuso">Riuso</a><a href="#come">Costruzione</a><a href="#guscio">Guscio</a><a href="#open">Open source</a><a href="#chi">Chi c'è dietro</a></div>
-  <div class="rgt"><nav class="seg" aria-label="Gli strumenti similFranz"><a href="https://franz8787.github.io/similfranz-saturimetro/" aria-current="page" style="--a:#5fd4ff" title="Saturimetro: SpO₂, polso e pletismografia su iPod touch®"><i></i><span class="l">Saturimetro</span><span class="s">Sat</span></a><a href="https://franz8787.github.io/similfranz-monitor/" style="--a:#46f2a0" title="Monitor iPad: Monitor-defibrillatore su iPad mini®"><i></i><span class="l">iPad</span><span class="s">iPad</span></a><a href="https://franz8787.github.io/similfranz-monitor-android/" style="--a:#ffbe5c" title="Monitor Android: Monitor-defibrillatore su tablet Android™"><i></i><span class="l">Android</span><span class="s">Android</span></a></nav><a class="cta" href="#come">Inizia</a></div>
+  <div class="rgt"><nav class="seg" aria-label="Gli strumenti similFranz"><a href="https://franz8787.github.io/similfranz-saturimetro/" aria-current="page" style="--a:#5fd4ff" title="Saturimetro: SpO₂, polso e pletismografia su iPod touch®"><i></i><span class="l">Saturimetro</span><span class="s">Sat</span></a><a href="https://franz8787.github.io/similfranz-monitor/" style="--a:#46f2a0" title="Monitor iOS: Monitor-defibrillatore su iPad mini®"><i></i><span class="l">Monitor iOS</span><span class="s">iOS</span></a><a href="https://franz8787.github.io/similfranz-monitor-android/" style="--a:#ffbe5c" title="Monitor Android: Monitor-defibrillatore su tablet Android™"><i></i><span class="l">Monitor Android</span><span class="s">Android</span></a></nav><a class="cta" href="#come">Inizia</a></div>
 </div>
 <style>.nav{display:none!important}</style>
 <script>
@@ -220,23 +220,27 @@ addEventListener("scroll",function(){if(!busy){busy=1;requestAnimationFrame(onSc
 // mini monitor: traccia ECG vera (P, QRS, ST, T) che scorre con lo spazio di cancellazione; i ritmi cambiano da soli
 var cv=bar.querySelector(".lane canvas");if(!cv)return;var cx=cv.getContext("2d"),acc=getComputedStyle(bar).getPropertyValue("--acc").trim()||"#46f2a0";
 var still=matchMedia("(prefers-reduced-motion: reduce)").matches,PX=70;
-var R=[{hr:72,d:8},{hr:44,d:8},{hr:76,d:6},{hr:138,d:7},{hr:86,d:9,st:1},{fv:1,d:6}];
+var PL=bar.getAttribute("data-onda")==="pleth";
+var R=PL?[{hr:78,d:8,a:1},{hr:118,d:7,a:.8},{hr:84,d:6,a:.42},{hr:52,d:8,a:.9},{hr:76,d:6,a:1}]   // pletismo: frequenza e perfusione
+        :[{hr:72,d:8},{hr:44,d:8},{hr:76,d:6},{hr:138,d:7},{hr:86,d:9,st:1},{fv:1,d:6}];
 var ri=0,rT=0,cur=R[0],nxt=-1,W=0,H=0,dpr=1,ys=null,x=0,last=0,bt=0,bl=60/72,ts=0,ph=[1,2,3],accu=0;
 function g(t,m,s,a){var z=(t-m)/s;return a*Math.exp(-z*z/2)}
 function beat(t,st){var v=g(t,.10,.022,.12)+g(t,.205,.008,-.12)+g(t,.225,.011,1)+g(t,.247,.009,-.28)+g(t,.42,.045,.26);
   if(st)v+=(t>.255&&t<.44?.3:0)+g(t,.40,.06,.16);return v}
+function pleth(t,L,a){var u=t/L;   // salita sistolica rapida, picco, incisura dicrota, discesa diastolica
+  return a*(g(u,.17,.075,1)+g(u,.27,.11,.5)+g(u,.52,.085,.28)-.05)}
 function fv(t){return .4*Math.sin(2*Math.PI*5.3*t+ph[0])*(.6+.4*Math.sin(2*Math.PI*.7*t))+.22*Math.sin(2*Math.PI*7.9*t+ph[1])+.12*Math.sin(2*Math.PI*3.1*t+ph[2])}
 function setR(i){ri=i;cur=R[i];rT=0;ph=[Math.random()*6,Math.random()*6,Math.random()*6]}
 function sample(dt){ts+=dt;rT+=dt;
   if(rT>cur.d&&nxt<0){var n=(ri+1)%R.length;if(cur.fv||R[n].fv)setR(n);else nxt=n}
   if(cur.fv)return fv(ts);
   bt+=dt;if(bt>=bl){bt-=bl;if(nxt>=0){setR(nxt);nxt=-1}bl=60/cur.hr*(1+(cur.hr<60?.04:.015)*(Math.random()*2-1))}
-  return beat(bt,cur.st)}
+  return PL?pleth(bt,bl,cur.a):beat(bt,cur.st)}
 function size(){dpr=Math.min(2,devicePixelRatio||1);W=cv.clientWidth;H=cv.clientHeight;if(!W)return;cv.width=W*dpr;cv.height=H*dpr;
   ys=new Float32Array(W);for(var i=0;i<W;i++)ys[i]=sample(1/PX);x=0;for(var j=1;j<=18;j++)ys[j%W]=NaN}
 function draw(){cx.setTransform(dpr,0,0,dpr,0,0);cx.clearRect(0,0,W,H);
   cx.lineWidth=1.25;cx.lineJoin="round";cx.strokeStyle=acc;cx.shadowColor=acc;cx.shadowBlur=3;cx.beginPath();
-  var mid=H*.68,amp=H*.56,pen=false;
+  var mid=PL?H*.86:H*.68,amp=PL?H*.72:H*.56,pen=false;
   for(var i=0;i<W;i++){var v=ys[i];if(v!==v){pen=false;continue}var y=mid-v*amp;if(pen)cx.lineTo(i,y);else{cx.moveTo(i,y);pen=true}}
   cx.stroke();cx.shadowBlur=0}
 function step(now){if(!ys||cv.clientWidth!==W){size();if(!ys){requestAnimationFrame(step);return}}
