@@ -146,6 +146,11 @@ I passi sono in [Per sviluppatori › Fai la tua versione](docs/sviluppo.md#fai-
 
 ## Come citarlo
 
+Se similFranz ti è utile in un corso, un poster, una tesi o un articolo, usalo liberamente: è nato per questo.
+Citarlo è il modo più semplice per far sapere ad altri formatori, istruttori e facilitatori di simulazione che esiste,
+e per tenere unita la rete di chi lo usa. E se lo migliori, raccontacelo qui su GitHub: segnalazioni
+([issue](https://github.com/Franz8787/similfranz-saturimetro/issues)), idee e modifiche sono benvenute, così il lavoro di uno diventa di tutti.
+
 Se lo usi in un corso, un poster o un articolo, trovi la citazione pronta con il pulsante
 **Cite this repository** qui su GitHub (file [`CITATION.cff`](CITATION.cff)). Ogni versione è archiviata
 su [Zenodo](https://zenodo.org), l'archivio scientifico del CERN, con un DOI permanente:
