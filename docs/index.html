@@ -148,17 +148,25 @@ footer b { color: var(--ink); font-family: var(--font-display); }
 }
 @media (max-width: 460px) { .steps { grid-template-columns: 1fr; } .device { width: min(100%, 250px); } }
 @media (prefers-reduced-motion: reduce) { .btn:hover { transform: none; } .scen { transition: none; } }
+/* smartphone verticale: ritocchi solo sotto i 600 px, il desktop resta com'è */
+@media (max-width: 600px) {
+  .eyebrow { line-height: 1.5; }
+  .rows div { flex-wrap: wrap; row-gap: 2px; }
+  .rows b { margin-left: auto; }
+  .audio-btn { min-height: 44px; padding: 8px 16px; }
+  .note, .shots figcaption { font-size: 0.875rem; }
+}
 </style>
 
 
 <!-- sf-eco:inizio (barra dell'ecosistema, generata da modelli-ecobar/inserisci.py) -->
 <style>
-html{scroll-padding-top:78px}
-.sf-eco{position:-webkit-sticky;position:sticky;top:0;z-index:50;height:66px;width:100%;box-sizing:border-box;display:flex;align-items:center;gap:10px;padding:0 max(16px,env(safe-area-inset-left,0px)) 16px;
+html{scroll-padding-top:68px}
+.sf-eco{position:-webkit-sticky;position:sticky;top:0;z-index:50;height:56px;width:100%;box-sizing:border-box;display:flex;align-items:center;gap:10px;padding:0 max(16px,env(safe-area-inset-left,0px));
   background:rgba(7,12,17,.6);backdrop-filter:saturate(1.6) blur(16px);-webkit-backdrop-filter:saturate(1.6) blur(16px);
   border-bottom:1px solid rgba(255,255,255,.07);font:600 13.5px/1 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#e3ecef;
   transition:height .3s cubic-bezier(.2,.7,.2,1),background .3s;animation:sfEcoIn .5s cubic-bezier(.2,.7,.2,1) both}
-.sf-eco.c{height:58px;background:rgba(7,12,17,.84)}
+.sf-eco.c{height:48px;background:rgba(7,12,17,.84)}
 .sf-eco .pg{position:absolute;left:0;bottom:-1px;height:2px;width:100%;transform-origin:0 50%;transform:scaleX(0);
   background:linear-gradient(90deg,transparent,var(--acc) 30%,var(--acc));box-shadow:0 0 8px var(--acc);pointer-events:none}
 .sf-eco a{color:inherit;text-decoration:none}
@@ -169,8 +177,9 @@ html{scroll-padding-top:78px}
 .sf-eco .hub strong{font-weight:700;letter-spacing:-.01em}
 .sf-eco .hub em{font-style:normal;color:#8fa3ad;font-weight:500}
 .sf-eco .hub .hd{width:8px;height:8px;border-radius:50%;background:var(--acc);--a:var(--acc);animation:sfEcoBeat 1.1s ease-out infinite}
-.sf-eco .lane{position:absolute;left:0;right:0;bottom:0;height:16px;border-top:1px solid rgba(255,255,255,.05);pointer-events:none}
-.sf-eco .lane canvas{display:block;width:100%;height:16px;-webkit-mask:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);mask:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
+.sf-eco .mon{position:relative;display:block;width:128px;height:36px;border-radius:10px;overflow:hidden;flex:none;background:radial-gradient(120% 140% at 50% 0%,rgba(255,255,255,.05),transparent 60%),#04080b;border:1px solid rgba(255,255,255,.09);box-shadow:inset 0 1px 0 rgba(255,255,255,.04),inset 0 0 14px rgba(0,0,0,.7)}
+.sf-eco .mon::before{content:"";position:absolute;inset:0;opacity:.35;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:8px 8px}
+.sf-eco .mon canvas{position:relative;display:block;width:100%;height:100%}
 .sf-eco .rt{font:700 11px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.05em;color:var(--acc);min-width:52px;text-align:right;white-space:nowrap}
 .sf-eco .rt.al{color:#ff5d5d;animation:sfEcoAl .8s steps(2) infinite}
 .sf-eco .sec{display:flex;gap:2px;margin:0 auto;padding:0 8px}
@@ -194,16 +203,17 @@ html{scroll-padding-top:78px}
 @keyframes sfEcoDrop{from{opacity:0;transform:translateY(-4px)}}
 @keyframes sfEcoBeat{0%{box-shadow:0 0 0 0 var(--a)}12%{box-shadow:0 0 0 4px rgba(255,255,255,.12)}40%,100%{box-shadow:0 0 0 7px transparent}}
 @keyframes sfEcoAl{50%{opacity:.35}}
+@media (max-width:760px){.sf-eco .mon{display:none}}
 @media (max-width:1220px){.sf-eco .sec{display:none}.sf-eco .rgt{margin-left:auto}}
 @media (max-width:640px){.sf-eco{gap:6px}.sf-eco .hub em,.sf-eco .cta{display:none}.sf-eco .hub{padding:0 8px 0 4px}
-  .sf-eco .seg a{padding:0 9px;gap:5px}.sf-eco .seg .l{display:none}.sf-eco .seg .s{display:inline}}
-@media (max-width:360px){.sf-eco .hub strong{display:none}}
+  .sf-eco .seg a{padding:0 9px;gap:5px;height:36px}.sf-eco .seg{padding:2px}.sf-eco .seg .l{display:none}.sf-eco .seg .s{display:inline}}
+@media (max-width:380px){.sf-eco{padding:0 10px}.sf-eco .hub{padding:0 6px 0 2px;gap:6px}.sf-eco .seg a{padding:0 7px;gap:4px}}
 @media (prefers-reduced-motion:reduce){.sf-eco,.sf-eco .hub .hd,.sf-eco .rt.al{animation:none}.sf-eco{transition:none}}
 </style>
 <div class="sf-eco" id="sf-eco" role="navigation" aria-label="Ecosistema similFranz" style="--acc:#5fd4ff" data-onda="pleth">
   <span class="pg" aria-hidden="true"></span>
   <a class="hub" href="https://franz8787.github.io/similfranz/" title="Torna all'ecosistema similFranz"><b>←</b> <strong>similFranz</strong> <em>ecosistema</em></a>
-  <span class="lane" aria-hidden="true"><canvas></canvas></span>
+  <span class="mon" aria-hidden="true"><canvas></canvas></span>
   <div class="sec"><a href="#scenario">Scenario</a><a href="#riuso">Riuso</a><a href="#come">Costruzione</a><a href="#guscio">Guscio</a><a href="#open">Open source</a><a href="#chi">Chi c'è dietro</a></div>
   <div class="rgt"><nav class="seg" aria-label="Gli strumenti similFranz"><a href="https://franz8787.github.io/similfranz-saturimetro/" aria-current="page" style="--a:#5fd4ff" title="Saturimetro: SpO₂, polso e pletismografia su iPod touch®"><i></i><span class="l">Saturimetro</span><span class="s">Sat</span></a><a href="https://franz8787.github.io/similfranz-monitor/" style="--a:#46f2a0" title="Monitor iOS: Monitor-defibrillatore su iPad mini®"><i></i><span class="l">Monitor iOS</span><span class="s">iOS</span></a><a href="https://franz8787.github.io/similfranz-monitor-android/" style="--a:#ffbe5c" title="Monitor Android: Monitor-defibrillatore su tablet Android™"><i></i><span class="l">Monitor Android</span><span class="s">Android</span></a></nav><a class="cta" href="#come">Inizia</a></div>
 </div>
@@ -218,8 +228,8 @@ function onScroll(){busy=0;var y=scrollY,h=document.documentElement.scrollHeight
   for(var k=0;k<secs.length;k++)secs[k].a.classList.toggle("on",secs[k]===on)}
 addEventListener("scroll",function(){if(!busy){busy=1;requestAnimationFrame(onScroll)}},{passive:true});addEventListener("resize",onScroll);onScroll();
 // mini monitor: traccia ECG vera (P, QRS, ST, T) che scorre con lo spazio di cancellazione; i ritmi cambiano da soli
-var cv=bar.querySelector(".lane canvas");if(!cv)return;var cx=cv.getContext("2d"),acc=getComputedStyle(bar).getPropertyValue("--acc").trim()||"#46f2a0";
-var still=matchMedia("(prefers-reduced-motion: reduce)").matches,PX=70;
+var cv=bar.querySelector(".mon canvas");if(!cv)return;var cx=cv.getContext("2d"),acc=getComputedStyle(bar).getPropertyValue("--acc").trim()||"#46f2a0";
+var still=matchMedia("(prefers-reduced-motion: reduce)").matches,PX=34;
 var PL=bar.getAttribute("data-onda")==="pleth";
 var R=PL?[{hr:78,d:8,a:1},{hr:118,d:7,a:.8},{hr:84,d:6,a:.42},{hr:52,d:8,a:.9},{hr:76,d:6,a:1}]   // pletismo: frequenza e perfusione
         :[{hr:72,d:8},{hr:44,d:8},{hr:76,d:6},{hr:138,d:7},{hr:86,d:9,st:1},{fv:1,d:6}];
@@ -237,15 +247,20 @@ function sample(dt){ts+=dt;rT+=dt;
   bt+=dt;if(bt>=bl){bt-=bl;if(nxt>=0){setR(nxt);nxt=-1}bl=60/cur.hr*(1+(cur.hr<60?.04:.015)*(Math.random()*2-1))}
   return PL?pleth(bt,bl,cur.a):beat(bt,cur.st)}
 function size(){dpr=Math.min(2,devicePixelRatio||1);W=cv.clientWidth;H=cv.clientHeight;if(!W)return;cv.width=W*dpr;cv.height=H*dpr;
-  ys=new Float32Array(W);for(var i=0;i<W;i++)ys[i]=sample(1/PX);x=0;for(var j=1;j<=18;j++)ys[j%W]=NaN}
+  ys=new Float32Array(W);for(var i=0;i<W;i++)ys[i]=sample(1/PX);x=0;for(var j=1;j<=10;j++)ys[j%W]=NaN}
 function draw(){cx.setTransform(dpr,0,0,dpr,0,0);cx.clearRect(0,0,W,H);
-  cx.lineWidth=1.25;cx.lineJoin="round";cx.strokeStyle=acc;cx.shadowColor=acc;cx.shadowBlur=3;cx.beginPath();
-  var mid=PL?H*.86:H*.68,amp=PL?H*.72:H*.56,pen=false;
-  for(var i=0;i<W;i++){var v=ys[i];if(v!==v){pen=false;continue}var y=mid-v*amp;if(pen)cx.lineTo(i,y);else{cx.moveTo(i,y);pen=true}}
-  cx.stroke();cx.shadowBlur=0}
+  var mid=PL?H*.8:H*.66,amp=PL?H*.58:H*.54,N=8,seg=Math.ceil(W/N);
+  cx.lineWidth=1.4;cx.lineJoin="round";cx.lineCap="round";cx.strokeStyle=acc;cx.shadowColor=acc;
+  for(var k=0;k<N;k++){   // dal più vecchio (subito dopo lo spazio di cancellazione) al più recente (sul pennino)
+    var a0=(x+10+k*seg)%W,al=.22+.78*Math.pow((k+1)/N,1.6);cx.globalAlpha=al;cx.shadowBlur=k>N-3?5:0;cx.beginPath();var pen=false;
+    for(var q=0;q<=seg;q++){var i=(a0+q)%W;if(i<a0&&q>0&&i===0){pen=false}var v=ys[i];if(v!==v){pen=false;continue}var y=mid-v*amp;
+      if(pen)cx.lineTo(i,y);else{cx.moveTo(i,y);pen=true}if(i===W-1)pen=false}
+    cx.stroke()}
+  cx.globalAlpha=1;cx.shadowBlur=8;var hx=(x-1+W)%W,hv=ys[hx];if(hv===hv&&!still){cx.fillStyle="#fff";cx.beginPath();cx.arc(hx,mid-hv*amp,1.5,0,7);cx.fill()}
+  cx.shadowBlur=0}
 function step(now){if(!ys||cv.clientWidth!==W){size();if(!ys){requestAnimationFrame(step);return}}
   var el=Math.min(.1,(now-last)/1000||0);last=now;accu+=el*PX;
-  while(accu>=1){accu-=1;ys[x]=sample(1/PX);x=(x+1)%W;for(var j=1;j<=18;j++)ys[(x+j)%W]=NaN}
+  while(accu>=1){accu-=1;ys[x]=sample(1/PX);x=(x+1)%W;for(var j=1;j<=10;j++)ys[(x+j)%W]=NaN}
   draw();requestAnimationFrame(step)}
 if(still){size();if(ys)draw();return}
 requestAnimationFrame(function(n){last=n;step(n)});
