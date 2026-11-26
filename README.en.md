@@ -4,6 +4,8 @@
 
 🇮🇹 [Leggi in italiano](README.md)
 
+Part of the **similFranz ecosystem**: all the tools on the [similFranz page](https://franz8787.github.io/similfranz/).
+
 **That old iPod touch® 4 in the drawer still has one more shift to work.**
 
 With a 3D printer and an afternoon of tinkering it becomes a simulation pulse oximeter:

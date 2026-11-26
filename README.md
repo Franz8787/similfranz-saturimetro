@@ -2,6 +2,8 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24064777.svg)](https://doi.org/10.5281/zenodo.24064777)
 
+Fa parte dell'**ecosistema similFranz**: tutti gli strumenti sulla [pagina similFranz](https://franz8787.github.io/similfranz/).
+
 🇬🇧 [Read in English](README.en.md)
 
 **Quel vecchio iPod touch® 4 nel cassetto ha ancora un turno da fare.**
