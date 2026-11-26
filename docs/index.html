@@ -9,70 +9,93 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@500;700&display=swap">
 <style>
-/* Layout: una colonna editoriale larga 1080px; l'eroe affianca il titolo al saturimetro (forma reale del guscio),
-   poi fasce che alternano carta e "sala" (il blu notte del display). */
+/* Stessa impaginazione delle pagine del monitor (iOS e Android): contenitore 1160 px, una sola gerarchia
+   ripetuta (occhiello · titolo · testo introduttivo, sempre sulla stessa larghezza di 760 px), poi un solo
+   schema per sezione: immagini a tutta larghezza, griglie di colonne uguali, passi numerati.
+   Fasce chiare alternate a fasce «sala» (il blu notte del display). Accento: l'azzurro SpO2 del saturimetro;
+   il verde resta solo dov'è clinico (il polso sul display, l'ossigenoterapia nello scenario). */
 :root {
-  --bg: #f2f5f6;
-  --surface: #ffffff;
-  --ink: #0f1c23;
-  --muted: #4d5f68;
-  --line: #d5dee2;
-  --room: #0d1a21;
-  --room-ink: #e6f0f3;
-  --room-muted: #8fa6b0;
-  --spo2: #0a8fae;
-  --spo2-screen: #50dcff;
-  --pulse: #2bb673;
-  --alarm: #f2a900;
-  --keyblue: #4280c4;
+  --bg: #f2f5f6; --surface: #ffffff; --ink: #0f1c23; --ink-2: #33464f; --muted: #4d5f68; --line: #d5dee2;
+  --room: #0a1419; --room-2: #0e1c23; --room-ink: #e6f0f3; --room-muted: #8fa6b0; --room-line: #1d3039;
+  --spo2: #0a7fa0; --spo2-screen: #5fd4ff; --spo2-deep: #2aa9d6; --pulse: #2bb673; --alarm: #f2a900; --keyblue: #4280c4;
+  --radius: 16px; --max: 1160px; --text: 760px;
   --font-display: "Familjen Grotesk", "Helvetica Neue", Arial, sans-serif;
   --font-body: "Atkinson Hyperlegible", "Segoe UI", Arial, sans-serif;
   --font-data: "JetBrains Mono", ui-monospace, Menlo, monospace;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0a1419; --surface: #0f1d24; --ink: #e3edf0; --muted: #9db1ba; --line: #213740;
-    --room: #050c10; --room-ink: #e6f0f3; --room-muted: #8fa6b0;
-    --spo2: #45cfea; --spo2-screen: #50dcff; --pulse: #3fcf88; --alarm: #f2b21f; --keyblue: #6aa3e0; color-scheme: dark;
+    --bg: #0a1419; --surface: #0f1d24; --ink: #e3edf0; --ink-2: #c3d2d8; --muted: #9db1ba; --line: #213740;
+    --room: #050c10; --room-2: #08141a; --spo2: #5fd4ff; --pulse: #3fcf88; --keyblue: #6aa3e0; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0a1419; --surface: #0f1d24; --ink: #e3edf0; --muted: #9db1ba; --line: #213740;
-  --room: #050c10; --room-ink: #e6f0f3; --room-muted: #8fa6b0;
-  --spo2: #45cfea; --spo2-screen: #50dcff; --pulse: #3fcf88; --alarm: #f2b21f; --keyblue: #6aa3e0; color-scheme: dark;
+  --bg: #0a1419; --surface: #0f1d24; --ink: #e3edf0; --ink-2: #c3d2d8; --muted: #9db1ba; --line: #213740;
+  --room: #050c10; --room-2: #08141a; --spo2: #5fd4ff; --pulse: #3fcf88; --keyblue: #6aa3e0; color-scheme: dark;
 }
 *, *::before, *::after { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--ink); font: 400 1.0625rem/1.65 var(--font-body); }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 1.0625rem/1.65 var(--font-body); overflow-x: hidden; }
 a { color: var(--spo2); text-underline-offset: 3px; }
-a:focus-visible, button:focus-visible { outline: 3px solid var(--spo2); outline-offset: 3px; border-radius: 6px; }
-h1, h2, h3 { font-family: var(--font-display); line-height: 1.08; text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
-h1 { font-size: clamp(2.3rem, 5.6vw, 4rem); font-weight: 700; }
-h2 { font-size: clamp(1.7rem, 3.4vw, 2.5rem); font-weight: 700; }
-h3 { font-size: 1.2rem; font-weight: 600; }
-p { margin: 0; max-width: 62ch; }
-.band { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: clamp(56px, 9vw, 104px); }
-.band.tight { padding-block-start: 0; }
-.wrap { max-width: 1080px; margin: 0 auto; display: grid; gap: 28px; }
-.eyebrow { font: 700 0.78rem/1 var(--font-data); letter-spacing: 0.14em; text-transform: uppercase; color: var(--spo2); }
-.lead { font-size: clamp(1.1rem, 1.6vw, 1.3rem); color: var(--muted); }
-.room { background: var(--room); color: var(--room-ink); }
-.room .lead, .room p.m { color: var(--room-muted); }
-.room .eyebrow { color: var(--spo2-screen); }
+a:focus-visible, button:focus-visible { outline: 3px solid var(--spo2-screen); outline-offset: 3px; border-radius: 6px; }
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.06; text-wrap: balance; margin: 0; letter-spacing: -0.015em; }
+h1 { font-size: clamp(2.4rem, 5.4vw, 4.1rem); font-weight: 700; }
+h2 { font-size: clamp(1.9rem, 3.6vw, 2.9rem); font-weight: 700; }
+h3 { font-size: 1.2rem; font-weight: 600; letter-spacing: -0.005em; line-height: 1.2; }
+p { margin: 0; }
+img, video { max-width: 100%; height: auto; display: block; }
+strong, b { font-weight: 700; }
 
-/* eroe */
-.hero { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: clamp(28px, 5vw, 64px); align-items: center; }
-.hero-copy { display: grid; gap: 22px; min-width: 0; }
-.hero h1 em { font-style: normal; color: var(--spo2); }
+/* ---------- impalcatura ---------- */
+.band { padding: clamp(64px, 9vw, 120px) max(16px, env(safe-area-inset-left, 0px)); }
+.container { max-width: var(--max); margin: 0 auto; }
+.room { background: var(--room); color: var(--room-ink); }
+.room.alt { background: var(--room-2); }
+.paper { background: var(--surface); }
+.head { display: grid; gap: 16px; max-width: var(--text); margin-bottom: clamp(36px, 5vw, 56px); }
+.head.center { margin-inline: auto; text-align: center; justify-items: center; }
+.head.center .eyebrow { justify-self: center; }
+.head.center .eyebrow::before { display: none; }
+.eyebrow { font: 700 0.76rem/1.5 var(--font-data); letter-spacing: 0.16em; text-transform: uppercase; color: var(--spo2); display: inline-flex; gap: 10px; align-items: center; justify-self: start; }
+.eyebrow::before { content: ""; width: 22px; height: 2px; background: currentColor; flex: none; }
+.room .eyebrow { color: var(--spo2-screen); }
+.lead { font-size: clamp(1.1rem, 1.5vw, 1.28rem); line-height: 1.6; color: var(--ink-2); }
+.room .lead { color: var(--room-muted); }
+.body { display: grid; gap: 16px; align-content: start; }
+.body p { color: var(--ink-2); }
+.room .body p { color: #c3d2d8; }
+.note { font-size: 0.95rem; color: var(--muted); max-width: var(--text); }
+.note.small { font-size: 0.85rem; }
+.room .note { color: var(--room-muted); }
+.room a { color: var(--spo2-screen); }
+.after { margin-top: clamp(28px, 4vw, 40px); }
+.gap-top { margin-top: clamp(40px, 5vw, 64px); }
+.sub { display: grid; gap: 14px; margin: clamp(56px, 7vw, 88px) 0 clamp(24px, 3vw, 32px); max-width: var(--text); }
+.sub h3 { font-size: clamp(1.5rem, 2.4vw, 2rem); }
+
+/* ---------- pulsanti ---------- */
 .ctas { display: flex; flex-wrap: wrap; gap: 12px; }
-.btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 20px; border-radius: 999px; font: 600 1rem/1 var(--font-display); text-decoration: none; border: 2px solid var(--ink); color: var(--ink); }
-.btn.primary { background: var(--ink); color: var(--bg); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 14px 22px; border-radius: 999px; font: 700 1rem/1.1 var(--font-display); text-decoration: none; border: 1.5px solid var(--line); color: var(--ink); background: transparent; }
+.room a.btn, .room .btn { color: var(--room-ink); border-color: rgba(255,255,255,.22); }
+.btn.primary, .room a.btn.primary { background: var(--spo2-screen); border-color: var(--spo2-screen); color: #04141b; }
 .btn:hover { transform: translateY(-1px); }
+
+/* ---------- apertura: centrata, il saturimetro sotto ---------- */
+.hero { padding-top: clamp(56px, 8vw, 104px); }
+.hero-copy { display: grid; gap: 26px; justify-items: center; text-align: center; max-width: 880px; margin: 0 auto; }
+.hero .eyebrow { flex-wrap: wrap; justify-content: center; justify-self: center; }
+.hero .eyebrow::before { display: none; }
+.hero h1 { max-width: 18ch; }
+.hero h1 em { font-style: normal; color: var(--spo2-screen); }
+.hero .lead { max-width: var(--text); color: #b9cad1; }
+.hero .ctas, .ctas.center { justify-content: center; }
 
 /* il saturimetro: proporzioni del guscio reale (71,4 x 123,5 mm), finestra 50,5 x 75,5, tasto Home Ø11,4,
    bocchettone del cavo sonda in alto a sinistra, conche dei tasti volume (fianco sinistro) e accensione (bordo alto) */
-.device-wrap { margin: 0; display: grid; gap: 18px; justify-items: center; padding-top: 34px; min-width: 0; }
-.device { position: relative; width: min(100%, 290px); aspect-ratio: 71.4 / 123.5; background: linear-gradient(160deg, #ffffff 0%, #f3f5f6 55%, #e7ebed 100%);
-  border-radius: 9.8% / 5.7%; box-shadow: 7px 9px 0 -2px #2b3237, 0 26px 44px -20px rgba(8, 26, 34, 0.55), inset 0 0 0 1px rgba(15, 28, 35, 0.07), inset 0 -4px 8px rgba(15, 28, 35, 0.05); }
+.device-wrap { margin: clamp(56px, 7vw, 80px) 0 0; display: grid; gap: 22px; justify-items: center; }
+.device { position: relative; width: min(100%, 300px); aspect-ratio: 71.4 / 123.5; background: linear-gradient(160deg, #ffffff 0%, #f3f5f6 55%, #e7ebed 100%);
+  border-radius: 9.8% / 5.7%; box-shadow: 0 40px 80px -30px rgba(95, 212, 255, .35), 0 26px 44px -20px rgba(0, 0, 0, .8), inset 0 0 0 1px rgba(15, 28, 35, 0.07), inset 0 -4px 8px rgba(15, 28, 35, 0.05); }
 .device .win { position: absolute; left: 14.6%; top: 19.4%; width: 70.8%; height: 61.1%; border-radius: 3% / 2%; background: #000; overflow: hidden;
   box-shadow: 0 0 0 3px #e3e8ea, 0 0 0 4px #cfd7db; }
 .device canvas { display: block; width: 100%; height: 100%; }
@@ -85,80 +108,100 @@ p { margin: 0; max-width: 62ch; }
 .device .pk-vol { left: 0; top: 21.7%; height: 16.3%; width: 4%; border-radius: 0 6px 6px 0; }
 .device .pk-pow { top: 0; left: 64%; width: 14%; height: 2.4%; --dir: 180deg; border-radius: 0 0 6px 6px; }
 .device-bar { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center; }
-.scen { padding: 7px 14px; border-radius: 999px; background: var(--surface); border: 1.5px solid var(--line); font-weight: 700; font-size: 0.95rem; transition: background 0.3s, border-color 0.3s; }
+.scen { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 16px; border-radius: 999px; background: rgba(255,255,255,.06); border: 1.5px solid var(--room-line); color: var(--room-ink); font-weight: 700; font-size: 0.95rem; transition: background 0.3s, border-color 0.3s; }
 .scen.alarm { border-color: var(--alarm); }
 .scen.o2 { background: var(--pulse); border-color: var(--pulse); color: #fff; }
-.audio-btn { font: 700 0.8rem/1 var(--font-data); letter-spacing: 0.04em; border: 1.5px solid var(--keyblue); color: var(--keyblue); background: transparent; border-radius: 999px; padding: 8px 12px; cursor: pointer; }
-.audio-btn[aria-pressed="true"] { background: var(--keyblue); color: #fff; }
+.audio-btn { min-height: 44px; font: 700 0.85rem/1 var(--font-data); letter-spacing: 0.04em; border: 1.5px solid var(--spo2-screen); color: var(--spo2-screen); background: transparent; border-radius: 999px; padding: 8px 18px; cursor: pointer; }
+.audio-btn[aria-pressed="true"] { background: var(--spo2-screen); color: #04141b; }
 
-/* sezioni */
-.split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(24px, 4vw, 56px); }
-.split > * { min-width: 0; display: grid; gap: 14px; align-content: start; }
-.quote { font: 600 clamp(1.3rem, 2.4vw, 1.75rem)/1.3 var(--font-display); border-left: 4px solid var(--spo2-screen); padding-left: 20px; max-width: 34ch; }
+/* ---------- immagini: un solo trattamento ---------- */
+.shot { margin: 0; display: grid; gap: 12px; align-content: start; min-width: 0; }
+.shot .frame { border-radius: var(--radius); overflow: hidden; background: #0b1215; box-shadow: 0 24px 48px -28px rgba(6, 22, 30, .55), 0 0 0 1px rgba(13, 26, 33, .08); }
+.room .shot .frame { box-shadow: 0 30px 60px -30px rgba(0,0,0,.9), 0 0 0 1px rgba(255,255,255,.07); }
+.shot .frame img { width: 100%; }
+.shot .frame.phone img { aspect-ratio: 9 / 15; object-fit: cover; object-position: top; }
+.shot .frame.photo img { aspect-ratio: 4 / 3; object-fit: cover; }
+.shot .frame.wide img { aspect-ratio: 16 / 9; object-fit: cover; }
+.shot .frame.tall img { aspect-ratio: 3 / 4; object-fit: cover; }
+.shot figcaption { font-size: 0.93rem; line-height: 1.5; color: var(--muted); }
+.room .shot figcaption { color: var(--room-muted); }
+
+/* ---------- griglie: solo colonne uguali ---------- */
+.g2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(20px, 3vw, 32px); }
+.g4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(16px, 2.2vw, 24px); }
+.g2 > *, .g4 > * { min-width: 0; }
+.g2.mid { align-items: center; }
+
+/* schede: tutte uguali */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; display: grid; gap: 10px; align-content: start; }
+.paper .card { background: var(--bg); }
+.room .card { background: rgba(255,255,255,.035); border-color: var(--room-line); }
+.card p { color: var(--muted); font-size: 1rem; }
+.room .card p { color: var(--room-muted); }
+.card.ours { border: 2px solid var(--spo2-deep); }
+.tag { font: 700 0.7rem/1.4 var(--font-data); letter-spacing: 0.14em; text-transform: uppercase; color: var(--spo2); }
+.room .tag { color: var(--spo2-screen); }
+.card.next { border-style: dashed; }
+.room .card.next .tag { color: var(--room-muted); }
+
+/* passi numerati */
+.steps { counter-reset: s; list-style: none; margin: 0; padding: 0; }
+.steps .card { counter-increment: s; }
+.steps .card::before { content: counter(s, decimal-leading-zero); font: 700 0.95rem/1 var(--font-data); color: var(--spo2); letter-spacing: 0.08em; }
+
+/* elenchi, citazioni, chip */
 .list { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
 .list li { padding-left: 28px; position: relative; }
-.list li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 14px; height: 2px; background: var(--spo2); }
+.list li::before { content: ""; position: absolute; left: 0; top: 0.78em; width: 14px; height: 2px; background: var(--spo2); }
 .room .list li::before { background: var(--spo2-screen); }
+.quote { font: 600 clamp(1.3rem, 2.2vw, 1.7rem)/1.3 var(--font-display); border-left: 4px solid var(--spo2-screen); padding-left: 20px; color: inherit; }
+.room .body p.quote { color: var(--room-ink); }
+.body p.quote { color: var(--ink); }
 .chips { display: flex; flex-wrap: wrap; gap: 10px; }
-.chip { padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); font-size: 0.95rem; }
-.ledger { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
-.col { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 24px; display: grid; gap: 10px; align-content: start; min-width: 0; }
-.col.ours { border: 2px solid var(--pulse); }
-.big { font: 700 clamp(2rem, 4vw, 2.8rem)/1 var(--font-data); font-variant-numeric: tabular-nums; }
-.col.ours .big { color: var(--pulse); }
-.rows { display: grid; gap: 6px; font-size: 0.95rem; color: var(--muted); }
-.rows div { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px dashed var(--line); padding-bottom: 6px; }
-.rows b { color: var(--ink); font-family: var(--font-data); font-weight: 500; text-align: right; }
-.note { font-size: 0.85rem; color: var(--muted); }
-.modes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
-.mode { border-top: 3px solid var(--spo2-screen); padding-top: 18px; display: grid; gap: 10px; align-content: start; min-width: 0; }
-.mode.next { border-top: 3px dashed var(--room-muted); }
-.tag { font: 700 0.75rem/1 var(--font-data); letter-spacing: 0.1em; text-transform: uppercase; color: var(--room-muted); }
-.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; counter-reset: s; }
-.steps li { counter-increment: s; display: grid; gap: 8px; align-content: start; min-width: 0; }
-.steps li::before { content: counter(s); font: 700 1.6rem/1 var(--font-data); color: var(--spo2); }
-.steps p { font-size: 0.97rem; color: var(--muted); }
-.shell { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: clamp(24px, 4vw, 56px); align-items: center; }
-.shell img { border-radius: 16px; background: var(--line); width: 100%; height: auto; max-height: 640px; object-fit: cover; }
-.gallery { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin: 8px 0 0; }
-.gallery figure { margin: 0; display: grid; gap: 8px; align-content: start; min-width: 0; }
-.shots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 28px; }
-.shots figure { margin: 0; }
-.shots img { width: 100%; height: auto; aspect-ratio: 9 / 15; object-fit: cover; object-position: top; border-radius: 14px; background: #0b1215; box-shadow: 0 6px 20px rgba(0,0,0,.18); }
-.shots figcaption { font-size: 13px; color: var(--muted, #5b6b66); margin-top: 8px; line-height: 1.35; }
-@media (max-width: 720px) { .shots { grid-template-columns: repeat(2, 1fr); } }
-.gallery img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 12px; background: #dfe9e4; }
-.gallery figcaption { font-size: 0.88rem; color: var(--muted); }
-.bgallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-.bgallery figure { margin: 0; display: grid; gap: 8px; align-content: start; min-width: 0; }
-.bgallery figure.wide { grid-column: 1 / -1; }
-.bgallery img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 12px; background: #0b1215; }
-.bgallery figure.wide img { aspect-ratio: 16 / 9; }
-.bgallery figcaption { font-size: 0.88rem; color: var(--room-muted); }
-.sources a { color: inherit; }
-@media (max-width: 460px) { .bgallery { grid-template-columns: 1fr; } }
-@media (max-width: 860px) { .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 460px) { .gallery { grid-template-columns: 1fr; } }
-.shell > div { display: grid; gap: 14px; min-width: 0; }
-.specs { font-family: var(--font-data); font-size: 0.9rem; display: grid; gap: 4px; color: var(--muted); }
-.warn { background: var(--surface); border: 1px solid var(--line); border-left: 6px solid var(--alarm); border-radius: 12px; padding: 22px 24px; display: grid; gap: 8px; }
+.chip { padding: 9px 16px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); font-size: 0.98rem; }
+
+/* costi */
+.big { font: 700 clamp(2.2rem, 4vw, 3rem)/1 var(--font-data); font-variant-numeric: tabular-nums; margin: 6px 0; }
+.card.ours .big { color: var(--spo2); }
+.rows { display: grid; margin: 6px 0 0; }
+.rows div { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; border-top: 1px dashed var(--line); padding: 10px 0; }
+.rows dt { color: var(--muted); }
+.rows dd { margin: 0; color: var(--ink); font: 500 0.95rem/1.4 var(--font-data); text-align: right; }
+
+.specs { list-style: none; margin: 0; padding: 18px 0 0; border-top: 1px solid var(--line); font: 500 0.92rem/1.5 var(--font-data); display: grid; gap: 6px; color: var(--muted); }
+.warn { background: var(--surface); border: 1px solid var(--line); border-left: 6px solid var(--alarm); border-radius: 12px; padding: 22px 24px; display: grid; gap: 8px; max-width: var(--text); }
 .warn strong { font-family: var(--font-display); font-size: 1.15rem; }
-footer { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 40px 56px; border-top: 1px solid var(--line); }
-footer .wrap { gap: 10px; font-size: 0.9rem; color: var(--muted); }
-footer b { color: var(--ink); font-family: var(--font-display); }
-@media (max-width: 860px) {
-  .hero, .split, .shell, .ledger, .modes { grid-template-columns: 1fr; }
-  .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.warn p { color: var(--ink-2); }
+.sources a { color: inherit; }
+
+footer { background: var(--room); color: var(--room-muted); padding: 64px max(16px, env(safe-area-inset-left, 0px)) 48px; font-size: 0.9rem; line-height: 1.6; border-top: 1px solid var(--room-line); }
+footer .cols { column-count: 2; column-gap: 48px; }
+footer .cols p { break-inside: avoid; margin-bottom: 18px; }
+footer b { color: var(--room-ink); font-family: var(--font-display); }
+footer a { color: var(--spo2-screen); }
+footer .sign { margin-top: 36px; padding-top: 22px; border-top: 1px solid var(--room-line); display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+
+@media (max-width: 900px) {
+  .g2 { grid-template-columns: 1fr; }
+  .g4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  footer .cols { column-count: 1; }
 }
-@media (max-width: 460px) { .steps { grid-template-columns: 1fr; } .device { width: min(100%, 250px); } }
 @media (prefers-reduced-motion: reduce) { .btn:hover { transform: none; } .scen { transition: none; } }
-/* smartphone verticale: ritocchi solo sotto i 600 px, il desktop resta com'è */
+/* smartphone verticale */
 @media (max-width: 600px) {
-  .eyebrow { line-height: 1.5; }
-  .rows div { flex-wrap: wrap; row-gap: 2px; }
-  .rows b { margin-left: auto; }
-  .audio-btn { min-height: 44px; padding: 8px 16px; }
-  .note, .shots figcaption { font-size: 0.875rem; }
+  .hero .ctas, .ctas.center { flex-direction: column; align-items: stretch; width: 100%; max-width: 360px; margin-inline: auto; }
+  .card { padding: 22px; }
+  .g4.steps { grid-template-columns: 1fr; }
+  .g4 { gap: 14px; }
+  .note { font-size: 1rem; }
+  .note.small, footer { font-size: 0.9rem; }
+  .shot figcaption { font-size: 0.95rem; }
+  .rows div { display: grid; gap: 2px; }
+  .rows dd { text-align: left; font-size: 1rem; }
+  .device { width: min(78%, 270px); }
+}
+@media (max-width: 420px) {
+  .g4.gallery { grid-template-columns: 1fr; }
 }
 </style>
 
@@ -271,8 +314,9 @@ requestAnimationFrame(function(n){last=n;step(n)});
 })();
 </script>
 <!-- sf-eco:fine -->
-<header class="band">
-  <div class="wrap hero">
+<!-- ================= APERTURA ================= -->
+<header class="band room hero" id="top">
+  <div class="container">
     <div class="hero-copy">
       <span class="eyebrow">Simulazione sanitaria · fai da te · open source · <a href="https://franz8787.github.io/similfranz/" style="color:inherit;white-space:nowrap;text-decoration:none">ecosistema similFranz →</a></span>
       <h1>Quel vecchio iPod® nel cassetto ha ancora <em>un turno da fare</em>.</h1>
@@ -298,35 +342,21 @@ requestAnimationFrame(function(n){last=n;step(n)});
   </div>
 </header>
 
-<section class="band room" id="chi">
-  <div class="wrap split">
-    <div>
-      <span class="eyebrow">Chi c'è dietro</span>
-      <h2>Un formatore di simulazione con il cacciavite sempre a portata di mano.</h2>
-    </div>
-    <div>
-      <p class="m">Conduco scenari ad alta fedeltà da anni, al centro di simulazione e in situ, nei reparti veri. E da sempre, quando un oggetto mi incuriosisce, lo apro per capire come funziona. Questo saturimetro nasce esattamente lì in mezzo: dalla voglia di avere strumenti credibili subito, senza aspettare il budget del prossimo anno.</p>
-      <p class="quote">Quando lo strumento si comporta come quello vero, il partecipante smette di pensare alla simulazione e comincia a pensare al paziente.</p>
-      <p class="m">Per questo ho curato i dettagli che in scenario fanno la differenza:</p>
-      <ul class="list">
-        <li>Un vero sensore da dito, recuperato da un saturimetro dismesso, esce dal guscio: il partecipante lo applica come farebbe in reparto.</li>
-        <li>Il valore compare dopo qualche secondo di ricerca, come su un saturimetro vero.</li>
-        <li>Il tono del polso scende con la saturazione: chi ascolta capisce prima ancora di guardare.</li>
-        <li>Sensore staccato, movimento, bassa perfusione: gli imprevisti che allenano il ragionamento clinico.</li>
-        <li>Tu cambi tutto con un tocco sul telefono, senza farti notare.</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
+<!-- ================= SCENARIO ================= -->
 <section class="band" id="scenario">
-  <div class="wrap split">
-    <div>
+  <div class="container">
+    <div class="head">
       <span class="eyebrow">Durante lo scenario</span>
       <h2>Tu guidi. Loro ragionano.</h2>
       <p class="lead">Ogni cambiamento arriva quando decidi tu: subito, oppure in modo graduale, da 10 secondi a 2 minuti, come farebbe un paziente vero.</p>
     </div>
-    <div>
+    <div class="g4">
+      <figure class="shot"><div class="frame phone"><img src="img/app_abbinamento_qr.png" alt="Pagina Abbinamento diretto sull'iPod: QR code, PIN e i tre passi" width="640" height="960" loading="lazy"></div><figcaption>Sull'iPod: inquadra e sei dentro.</figcaption></figure>
+      <figure class="shot"><div class="frame phone"><img src="img/console_paziente.png" alt="Console sul telefono, scheda Paziente: accensione e sonda in alto, cursori di SpO2 e polso, tempo di transizione" width="568" height="1058" loading="lazy"></div><figcaption>Paziente: sposti, scegli il tempo, applichi.</figcaption></figure>
+      <figure class="shot"><div class="frame phone"><img src="img/console_saturimetro.png" alt="Console sul telefono, scheda Saturimetro: silenzia allarmi e tempo di rilevamento" width="568" height="1058" loading="lazy"></div><figcaption>Saturimetro: quanto ci mette a trovare il polso.</figcaption></figure>
+      <figure class="shot"><div class="frame phone"><img src="img/app_schermo.png" alt="Schermo del saturimetro: SpO2 97 in azzurro, curva pletismografica, polso 77 in verde" width="640" height="960" loading="lazy"></div><figcaption>E sull'iPod i valori arrivano come su uno strumento vero.</figcaption></figure>
+    </div>
+    <div class="sub">
       <h3>Situazioni pronte</h3>
       <div class="chips">
         <span class="chip">Desaturazione graduale</span><span class="chip">Sonda applicata o tolta</span>
@@ -337,156 +367,189 @@ requestAnimationFrame(function(n){last=n;step(n)});
       <p class="note">Inquadri il QR sullo schermo dell'iPod e la console si apre nel browser del telefono, PIN già inserito. Niente app da installare.</p>
     </div>
   </div>
-  <div class="wrap shots">
-    <figure><img src="img/app_abbinamento_qr.png" alt="Pagina Abbinamento diretto sull'iPod: QR code, PIN e i tre passi" width="640" height="960" loading="lazy"><figcaption>Sull'iPod: inquadra e sei dentro.</figcaption></figure>
-    <figure><img src="img/console_paziente.png" alt="Console sul telefono, scheda Paziente: accensione e sonda in alto, cursori di SpO2 e polso, tempo di transizione" width="568" height="1058" loading="lazy"><figcaption>Paziente: sposti, scegli il tempo, applichi.</figcaption></figure>
-    <figure><img src="img/console_saturimetro.png" alt="Console sul telefono, scheda Saturimetro: silenzia allarmi e tempo di rilevamento" width="568" height="1058" loading="lazy"><figcaption>Saturimetro: quanto ci mette a trovare il polso.</figcaption></figure>
-    <figure><img src="img/app_schermo.png" alt="Schermo del saturimetro: SpO2 97 in azzurro, curva pletismografica, polso 77 in verde" width="640" height="960" loading="lazy"><figcaption>E sull'iPod i valori arrivano come su uno strumento vero.</figcaption></figure>
-  </div>
 </section>
 
-<section class="band tight">
-  <div class="wrap">
-    <span class="eyebrow">Dal cassetto alla sala</span>
-    <h2>Lo stesso scenario, a una frazione del costo.</h2>
-    <div class="ledger">
-      <div class="col">
+<!-- ================= COSTI ================= -->
+<section class="band paper">
+  <div class="container">
+    <div class="head">
+      <span class="eyebrow">Dal cassetto alla sala</span>
+      <h2>Lo stesso scenario, a una frazione del costo.</h2>
+      <p class="lead">Un dispositivo fermo agli aggiornamenti del 2013 torna a lavorare per la formazione. Meno elettronica in discarica, più ore di simulazione per tutti.</p>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <span class="tag">Commerciale</span>
         <h3>Saturimetro simulato commerciale</h3>
         <div class="big">~1.300 €</div>
-        <p class="note">Prezzo di listino indicativo di un saturimetro da simulazione comandato da app (2026).</p>
+        <p>Prezzo di listino indicativo di un saturimetro da simulazione comandato da app (2026).</p>
       </div>
-      <div class="col ours">
+      <div class="card ours">
+        <span class="tag">Fai da te</span>
         <h3>similFranz Saturimetro</h3>
         <div class="big">pochi €</div>
-        <div class="rows">
-          <div><span>iPod touch® 4</span><b>quello nel cassetto</b></div>
-          <div><span>Guscio in PLA</span><b>~58 g</b></div>
-          <div><span>Sensore da dito</span><b>quello di un saturimetro dismesso</b></div>
-          <div><span>4 inserti M2 + 4 viti M2×12</span><b>pochi centesimi</b></div>
-          <div><span>Software e modelli 3D</span><b>gratis, open source</b></div>
-        </div>
+        <dl class="rows">
+          <div><dt>iPod touch® 4</dt><dd>quello nel cassetto</dd></div>
+          <div><dt>Guscio in PLA</dt><dd>~58 g</dd></div>
+          <div><dt>Sensore da dito</dt><dd>quello di un saturimetro dismesso</dd></div>
+          <div><dt>4 inserti M2 + 4 viti M2×12</dt><dd>pochi centesimi</dd></div>
+          <div><dt>Software e modelli 3D</dt><dd>gratis, open source</dd></div>
+        </dl>
       </div>
     </div>
-    <p class="lead">Un dispositivo fermo agli aggiornamenti del 2013 torna a lavorare per la formazione. Meno elettronica in discarica, più ore di simulazione per tutti.</p>
   </div>
 </section>
 
+<!-- ================= RIUSO ================= -->
 <section class="band room" id="riuso">
-  <div class="wrap split">
-    <div>
+  <div class="container">
+    <div class="head">
       <span class="eyebrow">Riuso</span>
       <h2>Ce n'è uno in ogni cassetto. Letteralmente.</h2>
       <p class="lead">Tra il 2010 e il 2013 Apple® ha venduto oltre 50 milioni di iPod touch, e per gran parte di quel periodo il modello in vendita era proprio la 4ª generazione.</p>
     </div>
-    <div>
-      <p class="m">Oggi molti di quelli sono fermi in un cassetto, spenti, in attesa di un motivo per riaccendersi. Se il tuo non c'è, lo trovi sui canali dell'usato a poche decine di euro: chi lo vende lo considera un ricordo, tu ci vedi uno strumento.</p>
-      <p class="m"><strong>E la batteria?</strong> Dopo tanti anni non è più quella di una volta: Apple la progettava per conservare fino all'80% della capacità dopo 400 cicli di carica, e il litio invecchia anche fermo in un cassetto. Ma uno scenario di simulazione non dura una giornata: anche un'ora di autonomia è già tanto.</p>
-      <p class="quote">Ogni iPod che torna in sala è un dispositivo in meno tra i rifiuti elettronici.</p>
-      <p class="m">Nel 2022 il mondo ne ha prodotti 62 milioni di tonnellate, e solo il 22,3% è stato raccolto e riciclato in modo documentato.</p>
-      <p class="note sources">Fonti: <a href="https://appleinsider.com/articles/13/05/30/apples-ipod-touch-reaches-100-million-sales-milestone">AppleInsider</a> (100 milioni di iPod touch, maggio 2013) · <a href="https://www.macrumors.com/2010/09/06/total-ipod-touch-sales-estimated-at-over-45-million/">MacRumors</a> (oltre 45 milioni a settembre 2010, stima Asymco) · <a href="https://en.wikipedia.org/wiki/IPod_Touch_(4th_generation)">Wikipedia</a> (date della 4ª generazione) · <a href="https://discussions.apple.com/thread/1879363">Apple Discussions</a> (batteria iPod: 80% a 400 cicli) · <a href="https://publikationen.bibliothek.kit.edu/1000133836/117458694">KIT, 2021</a> (invecchiamento del litio a riposo) · <a href="https://unitar.org/index.php/about/news-stories/press/global-e-waste-monitor-2024-electronic-waste-rising-five-times-faster-documented-e-waste-recycling">Global E-waste Monitor 2024</a></p>
+    <div class="g2">
+      <div class="body">
+        <p>Oggi molti di quelli sono fermi in un cassetto, spenti, in attesa di un motivo per riaccendersi. Se il tuo non c'è, lo trovi sui canali dell'usato a poche decine di euro: chi lo vende lo considera un ricordo, tu ci vedi uno strumento.</p>
+        <p><strong>E la batteria?</strong> Dopo tanti anni non è più quella di una volta: Apple la progettava per conservare fino all'80% della capacità dopo 400 cicli di carica, e il litio invecchia anche fermo in un cassetto. Ma uno scenario di simulazione non dura una giornata: anche un'ora di autonomia è già tanto.</p>
+      </div>
+      <div class="body">
+        <p class="quote">Ogni iPod che torna in sala è un dispositivo in meno tra i rifiuti elettronici.</p>
+        <p>Nel 2022 il mondo ne ha prodotti 62 milioni di tonnellate, e solo il 22,3% è stato raccolto e riciclato in modo documentato.</p>
+      </div>
     </div>
+    <p class="note small sources after">Fonti: <a href="https://appleinsider.com/articles/13/05/30/apples-ipod-touch-reaches-100-million-sales-milestone">AppleInsider</a> (100 milioni di iPod touch, maggio 2013) · <a href="https://www.macrumors.com/2010/09/06/total-ipod-touch-sales-estimated-at-over-45-million/">MacRumors</a> (oltre 45 milioni a settembre 2010, stima Asymco) · <a href="https://en.wikipedia.org/wiki/IPod_Touch_(4th_generation)">Wikipedia</a> (date della 4ª generazione) · <a href="https://discussions.apple.com/thread/1879363">Apple Discussions</a> (batteria iPod: 80% a 400 cicli) · <a href="https://publikationen.bibliothek.kit.edu/1000133836/117458694">KIT, 2021</a> (invecchiamento del litio a riposo) · <a href="https://unitar.org/index.php/about/news-stories/press/global-e-waste-monitor-2024-electronic-waste-rising-five-times-faster-documented-e-waste-recycling">Global E-waste Monitor 2024</a></p>
   </div>
 </section>
 
-<section class="band room">
-  <div class="wrap">
-    <span class="eyebrow">Oggi, e domani</span>
-    <h2>Funziona da solo. E presto non sarà solo.</h2>
-    <div class="modes">
-      <div class="mode">
+<!-- ================= OGGI E DOMANI ================= -->
+<section class="band room alt">
+  <div class="container">
+    <div class="head">
+      <span class="eyebrow">Oggi, e domani</span>
+      <h2>Funziona da solo. E presto non sarà solo.</h2>
+    </div>
+    <div class="g2">
+      <div class="card">
         <span class="tag">Da subito</span>
         <h3>iPod + il tuo telefono</h3>
-        <p class="m">Il telefono fa da hotspot, l'iPod fa tutto il resto: simulazione, server e console. Inquadri il QR e sei pronto. Niente router, niente internet. Entri in reparto con lo strumento in tasca e lo scenario parte in un minuto.</p>
+        <p>Il telefono fa da hotspot, l'iPod fa tutto il resto: simulazione, server e console. Inquadri il QR e sei pronto. Niente router, niente internet. Entri in reparto con lo strumento in tasca e lo scenario parte in un minuto.</p>
       </div>
-      <div class="mode next">
+      <div class="card next">
         <span class="tag">Work in progress</span>
         <h3>Altri dispositivi, stessa filosofia</h3>
-        <p class="m">Il saturimetro è il primo pezzo di qualcosa di più grande, fatto di altri vecchi dispositivi Apple che tornano utili alla simulazione. Segui il progetto su GitHub® e sarai tra i primi a vederlo.</p>
+        <p>Il saturimetro è il primo pezzo di qualcosa di più grande, fatto di altri vecchi dispositivi Apple che tornano utili alla simulazione. Segui il progetto su GitHub® e sarai tra i primi a vederlo.</p>
       </div>
     </div>
   </div>
 </section>
 
+<!-- ================= COSTRUZIONE ================= -->
 <section class="band" id="come">
-  <div class="wrap">
-    <span class="eyebrow">Come si costruisce</span>
-    <h2>Quattro passi, un pomeriggio.</h2>
-    <ol class="steps">
-      <li><h3>Sblocca l'iPod</h3><p>Il jailbreak si fa con uno strumento gratuito e resta attivo anche dopo il riavvio. La guida ti accompagna passo per passo.</p></li>
-      <li><h3>Installa l'app</h3><p>La prima volta dal computer, con l'iPod collegato via USB: un comando scarica l'ultima versione e la installa. Poi gli aggiornamenti arrivano dal telefono, con un tocco nella console.</p></li>
-      <li><h3>Stampa il guscio</h3><p>Due pezzi, un piatto solo, meno di due ore. Il progetto per la stampante è già pronto.</p></li>
-      <li><h3>Simula</h3><p>Hotspot sul telefono, inquadri il QR sull'iPod e porta il tuo scenario in sala.</p></li>
-    </ol>
-    <div class="gallery">
-      <figure><img src="img/anteprima_esploso.png" alt="Rendering del guscio esploso: cornice bianca, iPod e scocca" width="1200" height="900" loading="lazy"><figcaption>Il progetto: cornice, iPod, scocca.</figcaption></figure>
-      <figure><img src="img/stampa_sul_piatto.jpg" alt="Cornice e scocca in stampa sullo stesso piatto" width="900" height="1200" loading="lazy"><figcaption>Un piatto solo, meno di due ore.</figcaption></figure>
-      <figure><img src="img/inserti_cornice.jpg" alt="Inserti filettati posati a filo negli angoli della cornice" width="1200" height="900" loading="lazy"><figcaption>Gli inserti filettati, posati col saldatore.</figcaption></figure>
-      <figure><img src="img/interno_sonda.jpg" alt="Scocca e cornice aperte con il cavo della sonda annodato all'interno" width="1200" height="900" loading="lazy"><figcaption>La sonda entra dall'alto e si ferma con un nodo.</figcaption></figure>
+  <div class="container">
+    <div class="head">
+      <span class="eyebrow">Come si costruisce</span>
+      <h2>Quattro passi, un pomeriggio.</h2>
     </div>
-    <p class="note">Ti servono: un iPod touch di 4ª generazione, un Mac® o un PC Linux® per la prima installazione (poi basta il telefono), una stampante 3D. Se usi Claude Code, può guidarti anche nell'installazione.</p>
+    <ol class="g4 steps">
+      <li class="card"><h3>Sblocca l'iPod</h3><p>Il jailbreak si fa con uno strumento gratuito e resta attivo anche dopo il riavvio. La guida ti accompagna passo per passo.</p></li>
+      <li class="card"><h3>Installa l'app</h3><p>La prima volta dal computer, con l'iPod collegato via USB: un comando scarica l'ultima versione e la installa. Poi gli aggiornamenti arrivano dal telefono, con un tocco nella console.</p></li>
+      <li class="card"><h3>Stampa il guscio</h3><p>Due pezzi, un piatto solo, meno di due ore. Il progetto per la stampante è già pronto.</p></li>
+      <li class="card"><h3>Simula</h3><p>Hotspot sul telefono, inquadri il QR sull'iPod e porta il tuo scenario in sala.</p></li>
+    </ol>
+    <div class="g4 gallery gap-top">
+      <figure class="shot"><div class="frame photo"><img src="img/anteprima_esploso.png" alt="Rendering del guscio esploso: cornice bianca, iPod e scocca" width="1200" height="900" loading="lazy"></div><figcaption>Il progetto: cornice, iPod, scocca.</figcaption></figure>
+      <figure class="shot"><div class="frame photo"><img src="img/stampa_sul_piatto.jpg" alt="Cornice e scocca in stampa sullo stesso piatto" width="900" height="1200" loading="lazy"></div><figcaption>Un piatto solo, meno di due ore.</figcaption></figure>
+      <figure class="shot"><div class="frame photo"><img src="img/inserti_cornice.jpg" alt="Inserti filettati posati a filo negli angoli della cornice" width="1200" height="900" loading="lazy"></div><figcaption>Gli inserti filettati, posati col saldatore.</figcaption></figure>
+      <figure class="shot"><div class="frame photo"><img src="img/interno_sonda.jpg" alt="Scocca e cornice aperte con il cavo della sonda annodato all'interno" width="1200" height="900" loading="lazy"></div><figcaption>La sonda entra dall'alto e si ferma con un nodo.</figcaption></figure>
+    </div>
+    <p class="note after">Ti servono: un iPod touch di 4ª generazione, un Mac® o un PC Linux® per la prima installazione (poi basta il telefono), una stampante 3D. Se usi Claude Code, può guidarti anche nell'installazione.</p>
   </div>
 </section>
 
-<section class="band tight" id="guscio">
-  <div class="wrap shell">
-    <img src="img/saturimetro_in_mano.jpg" alt="Il saturimetro acceso in mano: SpO2 96, polso 78, curva pletismografica, tastiera blu e sensore da dito collegato" width="900" height="1200">
-    <div>
+<!-- ================= GUSCIO ================= -->
+<section class="band paper" id="guscio">
+  <div class="container">
+    <div class="head">
       <span class="eyebrow">Il guscio</span>
       <h2>Lo prendi in mano e sembra uno strumento.</h2>
-      <p>Cornice e scocca stampate in 3D trasformano l'iPod in un saturimetro palmare. I tasti dell'iPod restano raggiungibili e la presa per la ricarica resta libera.</p>
-      <p><strong>Recupera anche la sonda.</strong> In alto c'è il bocchettone per il cavo di un vero sensore da dito, preso da un vecchio saturimetro dismesso: lo infili, lo fermi all'interno con una fascetta e il partecipante si trova in mano lo stesso cavo e la stessa pinza che userà in reparto. Il gesto di applicare il sensore diventa parte dello scenario.</p>
-      <div class="specs">
-        <span>71,4 × 123,5 × 18 mm</span>
-        <span>PLA, ugello 0,4, piatto unico</span>
-        <span>4 inserti filettati M2 · 4 viti M2×12</span>
-        <span>Ingresso per cavo sonda fino a Ø 3,6 mm, con fermacavo interno</span>
+      <p class="lead">Cornice e scocca stampate in 3D trasformano l'iPod in un saturimetro palmare. I tasti dell'iPod restano raggiungibili e la presa per la ricarica resta libera.</p>
+    </div>
+    <div class="g2 mid">
+      <figure class="shot"><div class="frame tall"><img src="img/saturimetro_in_mano.jpg" alt="Il saturimetro acceso in mano: SpO2 96, polso 78, curva pletismografica, tastiera blu e sensore da dito collegato" width="900" height="1200" loading="lazy"></div></figure>
+      <div class="body">
+        <h3>Recupera anche la sonda.</h3>
+        <p>In alto c'è il bocchettone per il cavo di un vero sensore da dito, preso da un vecchio saturimetro dismesso: lo infili, lo fermi all'interno con una fascetta e il partecipante si trova in mano lo stesso cavo e la stessa pinza che userà in reparto. Il gesto di applicare il sensore diventa parte dello scenario.</p>
+        <ul class="specs">
+          <li>71,4 × 123,5 × 18 mm</li>
+          <li>PLA, ugello 0,4, piatto unico</li>
+          <li>4 inserti filettati M2 · 4 viti M2×12</li>
+          <li>Ingresso per cavo sonda fino a Ø 3,6 mm, con fermacavo interno</li>
+        </ul>
       </div>
     </div>
   </div>
 </section>
 
+<!-- ================= BUMPER ================= -->
 <section class="band room">
-  <div class="wrap">
-    <span class="eyebrow">Il bumper in TPU</span>
-    <h2>Morbido sugli angoli, rigido quanto basta.</h2>
-    <p class="lead">Un guscio in gomma stampata che protegge dalle cadute e dà presa. Si monta con la sonda già fissata: il bocchettone del cavo scende nel suo colletto e le alette gli scattano sopra.</p>
-    <div class="bgallery">
-      <figure class="wide"><img src="img/bumper_studio_1_fronte.jpg" alt="Il saturimetro bianco nel bumper blu, display acceso" width="1400" height="1050" loading="lazy"></figure>
-      <figure><img src="img/bumper_studio_2_dettaglio.jpg" alt="Il colletto del bumper attorno al bocchettone del cavo sonda" width="1400" height="1050" loading="lazy"><figcaption>Il colletto: il cavo resta fuori, il bocchettone scatta dentro.</figcaption></figure>
-      <figure><img src="img/bumper_studio_3_lato_scritta.jpg" alt="Fianco del bumper con la finestrella sulla scritta incisa e le righine antiscivolo" width="1400" height="1050" loading="lazy"><figcaption>Righine antiscivolo e finestrella sulla firma.</figcaption></figure>
+  <div class="container">
+    <div class="head">
+      <span class="eyebrow">Il bumper in TPU</span>
+      <h2>Morbido sugli angoli, rigido quanto basta.</h2>
+      <p class="lead">Un guscio in gomma stampata che protegge dalle cadute e dà presa. Si monta con la sonda già fissata: il bocchettone del cavo scende nel suo colletto e le alette gli scattano sopra.</p>
     </div>
-    <p class="note" style="color: var(--room-muted)">TPU 95A, circa 30 g, piatto testurizzato. Il progetto BambuStudio è già pronto nella repo.</p>
+    <figure class="shot"><div class="frame wide"><img src="img/bumper_studio_1_fronte.jpg" alt="Il saturimetro bianco nel bumper blu, display acceso" width="1400" height="1050" loading="lazy"></div></figure>
+    <div class="g2 gap-top">
+      <figure class="shot"><div class="frame photo"><img src="img/bumper_studio_2_dettaglio.jpg" alt="Il colletto del bumper attorno al bocchettone del cavo sonda" width="1400" height="1050" loading="lazy"></div><figcaption>Il colletto: il cavo resta fuori, il bocchettone scatta dentro.</figcaption></figure>
+      <figure class="shot"><div class="frame photo"><img src="img/bumper_studio_3_lato_scritta.jpg" alt="Fianco del bumper con la finestrella sulla scritta incisa e le righine antiscivolo" width="1400" height="1050" loading="lazy"></div><figcaption>Righine antiscivolo e finestrella sulla firma.</figcaption></figure>
+    </div>
+    <p class="note after">TPU 95A, circa 30 g, piatto testurizzato. Il progetto BambuStudio è già pronto nella repo.</p>
   </div>
 </section>
 
-<section class="band tight" id="open">
-  <div class="wrap split">
-    <div>
+<!-- ================= OPEN SOURCE ================= -->
+<section class="band" id="open">
+  <div class="container">
+    <div class="head">
       <span class="eyebrow">Open source</span>
       <h2>Prendilo, cambialo, raccontami com'è andata.</h2>
+      <p class="lead">Codice e modelli 3D sono open source. Se fai simulazione, insegni, o semplicemente non resisti davanti a un dispositivo da salvare dal cassetto, qui sei a casa. Costruiscilo, adattalo ai tuoi scenari e condividi cosa hai migliorato: ogni idea rende lo strumento migliore per tutta la comunità.</p>
     </div>
-    <div>
-      <p>Codice e modelli 3D sono open source. Se fai simulazione, insegni, o semplicemente non resisti davanti a un dispositivo da salvare dal cassetto, qui sei a casa. Costruiscilo, adattalo ai tuoi scenari e condividi cosa hai migliorato: ogni idea rende lo strumento migliore per tutta la comunità.</p>
+    <div class="body" style="max-width: var(--text)">
       <ul class="list">
         <li>Formatori, istruttori e facilitatori di simulazione</li>
         <li>Centri di simulazione e reparti che fanno simulazione in situ</li>
         <li>Ingegneri clinici, tecnici, maker</li>
       </ul>
-      <div class="ctas"><a class="btn primary" href="https://github.com/Franz8787/similfranz-saturimetro">Vai al progetto su GitHub</a></div>
+      <div class="ctas after"><a class="btn primary" href="https://github.com/Franz8787/similfranz-saturimetro">Vai al progetto su GitHub</a></div>
     </div>
   </div>
 </section>
 
-<section class="band tight">
-  <div class="wrap">
-    <span class="eyebrow">L'ecosistema similFranz</span>
-    <h2>Dal saturimetro al monitor-defibrillatore.</h2>
-    <p class="lead">Il saturimetro è il primo strumento di similFranz. Dopo sono arrivati il <a href="https://franz8787.github.io/similfranz-monitor/">monitor-defibrillatore su iPad mini®</a> e quello per <a href="https://franz8787.github.io/similfranz-monitor-android/">tablet Android™</a>. Tutto l'ecosistema sulla <a href="https://franz8787.github.io/similfranz/">pagina similFranz</a>, per formatori, istruttori e facilitatori di simulazione.</p>
+<!-- ================= CITA ================= -->
+<section class="band paper" id="cita">
+  <div class="container">
+    <div class="head center">
+      <span class="eyebrow">Usalo, citalo, miglioralo</span>
+      <h2>Il lavoro di uno diventa di tutti.</h2>
+      <p class="lead">Se similFranz ti è utile in un corso, un poster, una tesi o un articolo, usalo liberamente: è nato per questo. Citarlo è il modo più semplice per far sapere ad altri formatori, istruttori e facilitatori di simulazione che esiste, e per tenere unita la rete di chi lo usa. Trovi il DOI su Zenodo e la citazione già pronta, anche nel pulsante «Cite this repository» su GitHub®. E se lo migliori, raccontacelo su GitHub: segnalazioni, idee e modifiche sono benvenute.</p>
+    </div>
+    <div class="ctas center">
+      <a class="btn primary" href="https://github.com/Franz8787/similfranz-saturimetro#come-citarlo">Come citarlo</a>
+      <a class="btn" href="https://github.com/Franz8787/similfranz-saturimetro/issues">Contribuisci su GitHub</a>
+    </div>
   </div>
 </section>
 
-<section class="band tight">
-  <div class="wrap">
+<!-- ================= ECOSISTEMA ================= -->
+<section class="band">
+  <div class="container">
+    <div class="head">
+      <span class="eyebrow">L'ecosistema similFranz</span>
+      <h2>Dal saturimetro al monitor-defibrillatore.</h2>
+      <p class="lead">Il saturimetro è il primo strumento di similFranz. Dopo sono arrivati il <a href="https://franz8787.github.io/similfranz-monitor/">monitor-defibrillatore su iPad mini®</a> e quello per <a href="https://franz8787.github.io/similfranz-monitor-android/">tablet Android™</a>. Tutto l'ecosistema sulla <a href="https://franz8787.github.io/similfranz/">pagina similFranz</a>, per formatori, istruttori e facilitatori di simulazione.</p>
+    </div>
     <div class="warn">
       <strong>Solo per simulazione e formazione</strong>
       <p>Non è un dispositivo medico, non misura nulla e non va mai usato su pazienti. Il jailbreak si esegue sul proprio dispositivo, a proprio rischio. Il progetto non distribuisce file di Apple e non è affiliato ad Apple né a produttori di dispositivi medici o di simulazione.</p>
@@ -494,11 +557,43 @@ requestAnimationFrame(function(n){last=n;step(n)});
   </div>
 </section>
 
+<!-- ================= CHI C'È DIETRO ================= -->
+<section class="band room alt" id="chi">
+  <div class="container">
+    <div class="head">
+      <span class="eyebrow">Chi c'è dietro</span>
+      <h2>Un formatore di simulazione con il cacciavite sempre a portata di mano.</h2>
+      <p class="lead">Conduco scenari ad alta fedeltà da anni, al centro di simulazione e in situ, nei reparti veri. E da sempre, quando un oggetto mi incuriosisce, lo apro per capire come funziona. Questo saturimetro nasce esattamente lì in mezzo: dalla voglia di avere strumenti credibili subito, senza aspettare il budget del prossimo anno.</p>
+    </div>
+    <div class="g2">
+      <div class="body">
+        <p class="quote">Quando lo strumento si comporta come quello vero, il partecipante smette di pensare alla simulazione e comincia a pensare al paziente.</p>
+      </div>
+      <div class="body">
+        <p>Per questo ho curato i dettagli che in scenario fanno la differenza:</p>
+        <ul class="list">
+          <li>Un vero sensore da dito, recuperato da un saturimetro dismesso, esce dal guscio: il partecipante lo applica come farebbe in reparto.</li>
+          <li>Il valore compare dopo qualche secondo di ricerca, come su un saturimetro vero.</li>
+          <li>Il tono del polso scende con la saturazione: chi ascolta capisce prima ancora di guardare.</li>
+          <li>Sensore staccato, movimento, bassa perfusione: gli imprevisti che allenano il ragionamento clinico.</li>
+          <li>Tu cambi tutto con un tocco sul telefono, senza farti notare.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 <footer>
-  <div class="wrap">
-    <span><b>similFranz Saturimetro</b> · un progetto open source di ilFranz (<a href="https://orcid.org/0009-0009-9368-0212">Francesco Palmisano</a>) per la comunità della simulazione sanitaria · <a href="https://doi.org/10.5281/zenodo.24064777">DOI 10.5281/zenodo.24064777</a></span>
-    <span>Idea, scelte cliniche e didattiche, design e prove sul campo: ilFranz. Codice, guide e modelli 3D sviluppati con l'aiuto di <a href="https://www.anthropic.com/claude-code">Claude Code</a> (Anthropic), assistente di programmazione basato sull'IA, sotto la sua guida e verifica.</span>
-    <span>Codice GPL v3 · Modelli 3D CC BY-NC 4.0 · Apple®, iPod®, iPod touch®, iPhone®, Mac® e gli altri marchi Apple citati sono di Apple Inc., registrati negli Stati Uniti e in altri Paesi; IOS è un marchio di Cisco usato su licenza; GitHub® è di GitHub, Inc.; Wi-Fi® di Wi-Fi Alliance; Linux® di Linus Torvalds; Android™ di Google LLC. Progetto indipendente, non affiliato a questi titolari</span>
+  <div class="container">
+    <div class="cols">
+      <p><b>similFranz Saturimetro</b> · un progetto open source di ilFranz (<a href="https://orcid.org/0009-0009-9368-0212">Francesco Palmisano</a>) per la comunità della simulazione sanitaria · <a href="https://doi.org/10.5281/zenodo.24064777">DOI 10.5281/zenodo.24064777</a></p>
+      <p>Idea, scelte cliniche e didattiche, design e prove sul campo: ilFranz. Codice, guide e modelli 3D sviluppati con l'aiuto di <a href="https://www.anthropic.com/claude-code">Claude Code</a> (Anthropic), assistente di programmazione basato sull'IA, sotto la sua guida e verifica.</p>
+      <p>Apple®, iPod®, iPod touch®, iPhone®, Mac® e gli altri marchi Apple citati sono di Apple Inc., registrati negli Stati Uniti e in altri Paesi; IOS è un marchio di Cisco usato su licenza; GitHub® è di GitHub, Inc.; Wi-Fi® di Wi-Fi Alliance; Linux® di Linus Torvalds; Android™ di Google LLC. Progetto indipendente, non affiliato a questi titolari.</p>
+    </div>
+    <div class="sign">
+      <span>© 2026 ilFranz (<a href="https://orcid.org/0009-0009-9368-0212">Francesco Palmisano</a>)</span>
+      <span>Codice GPL v3 · Modelli 3D CC BY-NC 4.0</span>
+    </div>
   </div>
 </footer>
 
