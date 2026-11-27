@@ -11,6 +11,7 @@ Fa parte dell'**ecosistema similFranz**: tutti gli strumenti sulla [pagina simil
 Con una stampante 3D e un pomeriggio di smanettamento diventa un saturimetro da simulazione:
 SpO₂, polso, pletismografia e allarmi, che comandi dal tuo telefono. Lo metti in tasca
 e lo porti dove serve: in sala, in reparto, al prossimo corso.
+Nessun abbonamento, nessun account, nessun costo ricorrente.
 
 <p align="center">
   <img src="docs/img/saturimetro_in_mano.jpg" width="420" alt="Il saturimetro similFranz vero, acceso in mano: SpO2 96, polso 78, curva pletismografica e sensore da dito collegato">

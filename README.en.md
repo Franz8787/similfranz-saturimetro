@@ -11,6 +11,7 @@ Part of the **similFranz ecosystem**: all the tools on the [similFranz page](htt
 With a 3D printer and an afternoon of tinkering it becomes a simulation pulse oximeter:
 SpO₂, pulse rate, plethysmography and alarms, all driven from your phone. Put it in your pocket
 and take it wherever you need it: the sim lab, the ward, your next course.
+No subscription, no account, no recurring costs.
 
 <p align="center">
   <img src="docs/img/saturimetro_in_mano.jpg" width="420" alt="The real similFranz oximeter, switched on and held in hand: SpO2 96, pulse 78, pleth wave and finger sensor attached">
